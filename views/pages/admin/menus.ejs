@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menus</title>
+</head>
+<body>
+
+<%
+if(locals.itemName) {
+%>
+<%=itemName%>
+<%
+}
+%>
+
+<h2>Add New Menu</h2>
+<form method="POST" action="/admin/menus">
+    <label for="newMenuName">Menu Name</label>
+    <input required type="text" name="newMenuName" id="newMenuName" />
+    <input type="submit" value="Add Menu"/>
+</form>
+
+<h2>Add New Menu Item</h2>
+<form method="POST" action="/admin/menus">
+    <div>
+        <label for="menuName">Menu Name</label>
+        <input required type="text" name="menuName" id="menuName" />
+    </div>
+    <div>
+        <label for="itemName">Item Name</label>
+        <input required type="text" name="itemName" id="itemName" />
+    </div>
+    <div>
+        <label for="itemDescription">Item Description</label>
+        <input required type="text" name="itemDescription" id="itemDescription" />
+    </div>
+    <div>
+        <label for="itemCategory">Item Category</label>
+        <input required type="text" name="itemCategory" id="itemCategory" />
+    </div>
+    <div>
+        <label for="itemPrice">Item Name</label>
+        <input required type="text" name="itemPrice" id="itemPrice" />
+    </div>
+    <div>
+        <input type="submit" value="Add Menu Item"/>
+    </div>
+</form>
+add items
+
+etc
+</body>
+</html>

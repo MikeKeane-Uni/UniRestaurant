@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen View | Active Orders</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+    </style>
+</head>
+<body>
+
+<main>
+    <div class="container">
+        <div class="card outline rounded">
+            <header><h2>Items to Make</h2></header>
+            <div class="layout-row item-list">
+                <div class="sizer w-2">
+                    <strong>Table</strong>
+                </div>
+                <div class="sizer w-7">
+                    <strong>Item Name</strong>
+                </div>
+                <div class="sizer w-3">
+                    <strong>Mark Done</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+
+    socket.on("disconnect", function() {
+        console.log("Socket disconnected");
+
+        socket.open();
+    });
+
+    socket.on("newOrder", function (data) {
+        for(var i = 0; i < data.length; i++) {
+            document.querySelector(".item-list").innerHTML += "<div class=\"layout-row\"><div class=\"sizer w-2\">\n" +
+                "                    " + data[i].tableNumber + "\n" +
+                "                </div>\n" +
+                "                <div class=\"sizer w-7\">\n" +
+                "                    " + data[i].itemName + "\n" +
+                "                </div>\n" +
+                "                <div class=\"sizer w-3\">\n" +
+                "                    <input onchange=\"removeItem(this)\" type=\"checkbox\" />\n" +
+                "                </div></div>";
+        }
+    });
+
+    function removeItem(cb) {
+        var wait = null;
+        if(cb.checked) {
+            wait = setTimeout(function() {
+                if(cb.checked) {
+                    var item = getParent(cb, ".layout-row");
+                    console.log(item);
+                    item.parentNode.removeChild(item);
+                }
+            }, 2000);
+        } else {
+
+        }
+    }
+</script>
+
+<script src="js/client.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order | Rstaurant App</title>
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+<body>
+
+<main>
+    <div class="container">
+        <div class="layout-row">
+            <div class="sizer w-12">
+                <div class="card outline rounded">
+                    <form id="addItemForm" class="form">
+                        <header><h2>Add Items To Order</h2></header>
+                        <div class="content">
+                            <div class="layout-row">
+                                <div class="sizer w-6 mw-4">
+                                    <div class="input-holder">
+                                        <div class="select">
+                                            <div id="tableNumber" class="selected">Table number...</div>
+                                            <div class="option-container">
+                                                <div class="option">1</div>
+                                                <div class="option">2</div>
+                                                <div class="option">3</div>
+                                                <div class="option">4</div>
+                                                <div class="option">5</div>
+                                            </div>
+                                        </div>
+                                        <select>
+                                            <option>Table number...</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="sizer w-6 mw-4">
+                                    <div class="input-holder">
+                                        <input id="itemId" type="text" placeholder="Item id..."/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <footer>
+                            <div class="input-holder">
+                                <input id="addItem" type="submit" value="Add to order"/>
+                            </div>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+
+            <div class="sizer w-12">
+                <div class="card outline rounded">
+                    <header><h2>Order List</h2></header>
+                    <div class="content">
+                        <form>
+                            <ul id="orderList" class="list small">
+
+                            </ul>
+                        </form>
+                    </div>
+                    <footer>
+                        <div class="input-holder">
+                            <input onclick="sendOrder()" type="submit" value="Submit Order" />
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    var menu = {
+        "123": {
+            name: "Sweet and Sour Pork",
+            price: 10.00
+        },
+        "456": {
+            name: "Chicken Fried Rice",
+            price: 5.00
+        }
+    }
+
+    var addItemForm = document.querySelector("#addItemForm");
+    var addItemButton = document.querySelector("#addItem");
+    var itemId = document.querySelector("#itemId");
+    var tableNumber = document.querySelector("#tableNumber");
+    var orderList = document.querySelector("#orderList");
+
+    addItemForm.addEventListener("submit", function(e) {
+        console.log("SUBMITTING");
+        e.preventDefault();
+        orderList.innerHTML += "<li><span class=\"item-id\">" + itemId.value + "</span>: <span class=\"item-name\">" + menu[itemId.value].name + "</span></li>";
+        return false;
+    });
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+    var socket = io();
+
+    socket.on("disconnect", function() {
+        console.log("Socket disconnected");
+
+        socket.open();
+    });
+
+    function sendOrder() {
+        var items = orderList.querySelectorAll("li");
+        var orderData = [];
+
+        for(var i = 0; i < items.length; i++) {
+            orderData.push({itemId: items[i].querySelector(".item-id").innerText, itemName: items[i].querySelector(".item-name").innerText, tableNumber: tableNumber.innerText});
+        }
+
+        //TODO: put into database and emit two separate events via socket.io - one to kitchen, one to counter
+        socket.emit("newOrder", orderData);
+        /*
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/send-order', true);
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+
+        xhr.send(JSON.stringify({id: 1}));
+        */
+
+
+    }
+</script>
+
+<script src="js/client.js"></script>
+</body>
+</html>

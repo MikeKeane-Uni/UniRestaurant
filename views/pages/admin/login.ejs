@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Admin</title>
+
+    <link rel="stylesheet" href="/css/login.css" />
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="materialize/css/materialize.css">
+</head>
+<body>
+<div class="login-required">You must log in to use the admin areas.</div>
+
+<form method="POST" action="/admin">
+    <input type="hidden" name="targetUrl" value="<%- locals.targetUrl ? targetUrl : '/admin'%>" />
+    <label for="username">Username:</label>
+    <input id="username" name="username" type="text" />
+    <label for="password">Password:</label>
+    <input id="password" name="password" type="password" />
+
+    <input type="submit" value="Log in"/>
+</form>
+</body>
+</html>
