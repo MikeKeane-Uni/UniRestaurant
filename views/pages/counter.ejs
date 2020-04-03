@@ -1,56 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen View | Active Orders</title>
+    <%- include('../partials/head') %>
 
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/style.css" />
-    <style>
-    </style>
+    <link rel="stylesheet" href="/css/counter-view.css" />
 </head>
 <body>
 
-<header class="page-header">
+<div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <div class="layout-row">
-            <div class="sizer w-8">
-                <h1 class="page-title">Counter</h1>
-            </div>
-            <div class="sizer w-4 align-right links">
-                <a class="material-icons">home</a>
-                <a class="material-icons">local_drink</a>
+        <h1>Restaurant</h1>
+        <p>Counter View</p>
+    </div>
+</div>
+
+<main class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card mb-3 bg-primary text-white">
+                <div class="material-icons">local_bar</div>
+                <div>Drink Orders</div>
             </div>
         </div>
-    </div>
-</header>
-
-<main>
-    <div class="container">
-        <div class="layout-row">
-            <div class="sizer w-4">
-                <div class="card outline">
-                    <a href="drink-orders">Drinks</a>
-                </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card mb-3 bg-secondary text-white">
+                <div class="material-icons">receipt</div>
+                <div>Bills</div>
             </div>
-            <div class="sizer w-4">
-
-            </div>
-            <div class="sizer w-4">
-
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card mb-3 bg-warning text-white">
+                <div class="material-icons">view_list</div>
+                <div>Reports</div>
             </div>
         </div>
     </div>
 </main>
 
 <script>
-
+function alertNew(el) {
+    el.classList.add("flash");
+    setTimeout(function() {
+        el.classList.remove("flash");
+    }, 400);
+}
 
 </script>
 
-<script src="js/client.js"></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+body {
+    padding-bottom: 1.5rem;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+#itemDetails .row > div {
+    margin-bottom: 1rem;
+}
+
+form {
+    margin-bottom: 1.5rem;
+}
+
+#orderItems {
+    padding: 1rem;
+}
+
+.order-item {
+    display: flex;
+    padding: 1rem;
+    border-bottom: 1px dotted #000000;
+}
+
+.order-item .qty {
+    flex: 4rem 0 0;
+}
+
+.order-item .description {
+    flex: 100% 1 1;
+}
+
+.order-item .delete-item {
+    flex: 2rem;
+}
+
+
