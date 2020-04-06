@@ -1,0 +1,30 @@
+{
+  "name": "restaurantapp",
+  "version": "1.0.0",
+  "description": "Paperless Restaurant Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MikeKeane-Uni/restaurantApp.git"
+  },
+  "author": "Mike Keane",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MikeKeane-Uni/restaurantApp/issues"
+  },
+  "homepage": "https://github.com/MikeKeane-Uni/restaurantApp#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "http": "0.0.0",
+    "mongoose": "^5.9.3",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  }
+}

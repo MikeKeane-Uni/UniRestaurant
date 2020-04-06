@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../partials/head') %>
+
+    <link rel="stylesheet" type="text/css" href="/css/admin-view.css" /></title>
+</head>
+<body>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1>Menus</h1>
+        <p>Restaurant Admin Area</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <ul id="currentMenus" class="col-sm-12 accordion">
+            <%
+            const menus = JSON.parse(locals.menus);
+
+            for(let i = 0; i < menus.length; i++) {
+                let menu = menus[i];
+                let menuItems = menu.items;
+            %>
+            <li>
+                <div class="menu-header" data-toggle="collapse" data-target="#menu<%= menu.menu_id %>">
+                    <span class="material-icons delete-menu">delete</span><span class="menu-name"><%= menu.name %> (<span class="menu-id"><%= menu.menu_id %></span>)</span><span class="material-icons expand-menu">add</span>
+                </div>
+                <div id="menu<%= menu.menu_id %>" class="menu-details collapse">
+                    <div class="item-holder">
+                    <%
+                    if(menuItems.length < 1) {
+                    %>
+                    <div class="no-items">Currently no items in this menu</div>
+                    <%
+                    } else {
+                        for(let j = 0; j < menuItems.length; j++) {
+                    %>
+                            <div class="menu-item item-<%= menuItems[j].item_id.replace(".", "-") %>">
+                                <div class="item-id"><%= menuItems[j].item_id %></div>
+                                <div class="item-name"><%= menuItems[j].name %></div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-danger delete-item" data-menu-id="<%= menu.menu_id %>" data-item-id="<%= menuItems[j].item_id %>">Delete</button>
+                                </div>
+                            </div>
+                    <%
+                        }
+                    }
+                    %>
+                    </div>
+
+                    <div class="add-menu-item-container">
+                        <button class="btn btn-outline-success add-menu-item" data-toggle="modal" data-target="#addMenuItemModal" data-menu-id="<%= menu.menu_id %>">Add Item to <%= menu.name %></button>
+                    </div>
+                </div>
+            </li>
+            <%
+            }
+            %>
+        </ul>
+        <button id="addNewMenu" class="btn btn-success" data-toggle="modal" data-target="#addNewMenuModal">Add New Menu</button>
+
+    </div>
+</div>
+
+<div id="addNewMenuModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="addNewMenuForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a New Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Menu ID</label>
+                    <input class="form-control" type="text" name="menu-id" />
+                </div>
+                <div class="form-group">
+                    <label>Menu Name</label>
+                    <input class="form-control" type="text" name="menu-name" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Add Menu" />
+                <input type="reset" class="btn btn-secondary" data-dismiss="modal" value="Close" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="addMenuItemModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="addMenuItemForm" class="modal-content">
+            <input type="hidden" name="menu-id" value="">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Item to Menu <span id="menuIdText"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Item ID</label>
+                    <input class="form-control" type="text" name="item-id" />
+                </div>
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input class="form-control" type="text" name="item-name" />
+                </div>
+                <div class="form-group">
+                    <label>Item Price</label>
+                    <input class="form-control" type="text" name="item-price" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Add Item" />
+                <input type="reset" class="btn btn-secondary" data-dismiss="modal" value="Close" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../../partials/bootstrapjs') %>
+
+<!-- load socket.io -->
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    var socket = io("/menus");
+
+    socket.on("newMenuAdded", function(menuData) {
+        console.log(menuData);
+        displayNewMenu(menuData);
+    });
+
+    socket.on("newMenuItemAdded", function(itemData) {
+        console.log(itemData);
+        displayNewMenuItem(itemData);
+    });
+
+    socket.on("itemDeleted", function(item) {
+        document.querySelector(".item-" + item.id.replace(".", "-")).parentNode.removeChild(document.querySelector(".item-" + item.id.replace(".", "-")));
+    });
+
+    socket.on("menuDeleted", function(menu) {
+        console.log(menu.id);
+        console.log(document.querySelector("#menu" + menu.id));
+        document.querySelector("#menu" + menu.id).parentNode.parentNode.removeChild(document.querySelector("#menu" + menu.id).parentNode);
+    });
+</script>
+
+<script>
+    function displayNewMenu(menuData) {
+        var newMenu = document.createElement("LI");
+
+        var menuHTML = "<div class=\"menu-header\" data-toggle=\"collapse\" data-target=\"#menu" + menuData.menu_id + "\">\n" +
+            "    <span class=\"material-icons delete-menu\">delete</span><span class=\"menu-name\">" + menuData.name + " (<span class=\"menu-id\">" + menuData.menu_id + "</span>)</span><span \" + class=\"material-icons expand-menu\">add</span>\n" +
+            "    </div>";
+
+        newMenu.innerHTML = menuHTML;
+
+        document.querySelector("#currentMenus").appendChild(newMenu);
+    }
+
+    function displayNewMenuItem(itemData) {
+        var newMenuItemEl = document.createElement("DIV");
+        newMenuItemEl.classList.add("menu-item");
+        newMenuItemEl.classList.add("item-" + itemData.item_id.replace(".", "-"));
+
+        var itemIdEl = document.createElement("DIV");
+        itemIdEl.classList.add("item-id");
+        itemIdEl.innerText = itemData.item_id;
+
+        var itemNameEl = document.createElement("DIV");
+        itemNameEl.classList.add("item-name");
+        itemNameEl.innerText = itemData.name;
+
+        var actionButtonsEl = document.createElement("DIV");
+        actionButtonsEl.classList.add("action-buttons");
+
+        /*var editButtonEl = document.createElement("DIV");
+        editButtonEl.classList.add("btn");
+        editButtonEl.classList.add("btn-secondary");
+        editButtonEl.innerText = "Edit";*/
+
+        var deleteButtonEl = document.createElement("DIV");
+        deleteButtonEl.classList.add("btn");
+        deleteButtonEl.classList.add("btn-danger");
+        deleteButtonEl.classList.add("delete-item")
+        deleteButtonEl.innerText = "Delete";
+        deleteButtonEl.dataset.menuId = itemData.menu_id;
+        deleteButtonEl.dataset.itemId = itemData.item_id;
+        deleteButtonEl.addEventListener("click", function() {
+            deleteMenuItem(this.dataset.itemId);
+        });
+
+
+        //actionButtonsEl.appendChild(editButtonEl);
+        actionButtonsEl.appendChild(deleteButtonEl);
+
+        newMenuItemEl.appendChild(itemIdEl);
+        newMenuItemEl.appendChild(itemNameEl);
+        newMenuItemEl.appendChild(actionButtonsEl);
+
+        document.querySelector("#menu" + itemData.menu_id + " .item-holder").appendChild(newMenuItemEl);
+
+        //check if no item is displayed, if so, hide it
+        if(!!document.querySelector("#menu" + itemData.menu_id + " .no-items")) {
+            document.querySelector("#menu" + itemData.menu_id + " .no-items").classList.add("hide");
+        }
+    }
+
+    function addNewMenu(menuId, menuName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "api/menus", true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(JSON.stringify({menu_id: menuId, name: menuName}));
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+
+    function updateMenu(menuId, menuName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("PUT", "api/menus/" + menuId, true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(JSON.stringify({menu_name: menuName}));
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+
+    function deleteMenu(menuId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("DELETE", "api/menus/" + menuId, true);
+        xhr.send();
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+
+    function addNewMenuItem(itemId, itemName, itemPrice, menuId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "api/menu-items", true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(JSON.stringify({item_id: itemId, name: itemName, price: itemPrice, menu_id: menuId}));
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+
+    function deleteMenuItem(itemId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("DELETE", "api/menu-items/" + itemId, true);
+        xhr.send();
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+
+    var menuHeaders = document.querySelectorAll(".menu-header");
+
+    //add click listener to menu headers (opening and closing menu details)
+    for(var i = 0; i < menuHeaders.length; i++) {
+        (function(i) {
+            menuHeaders[i].addEventListener("click", function() {
+                var icon = this.querySelector(".material-icons.expand-menu");
+
+                if(icon.innerText === "add") {
+                    icon.innerText = "remove";
+                } else {
+                    icon.innerText = "add";
+                }
+            }, true);
+
+            menuHeaders[i].querySelector(".delete-menu").addEventListener("click", function(e) {
+                e.stopPropagation();
+
+                var menuId = menuHeaders[i].querySelector(".menu-id").innerText;
+
+                if(confirm("Are you sure you want to delete menu " + menuId + "?")) {
+                    deleteMenu(menuId);
+                }
+            });
+        })(i);
+    }
+
+    //retrieves all input name/value pairs
+    //TODO: need to make it ignore hidden inputs
+    function getFormData(form) {
+        var inputs = form.querySelectorAll("input");
+        var data = {};
+        for(var i = 0; i < inputs.length; i++ ) {
+            if(inputs[i].type === "submit" || inputs[i].type === "reset") {
+                continue;
+            }
+            data[inputs[i].name] = inputs[i].value;
+        }
+
+        return data;
+    }
+
+    function clearFormData(form) {
+        var inputs = form.querySelectorAll("input");
+
+        for(var i = 0; i < inputs.length; i++ ) {
+            if(inputs[i].type === "submit" || inputs[i].type === "reset") {
+                continue;
+            }
+
+            inputs[i].value = "";
+        }
+
+        return data;
+    }
+
+    //add functionality to add menu form
+    document.querySelector("#addNewMenuForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        var inputData = getFormData(this);
+
+        addNewMenu(inputData["menu-id"], inputData["menu-name"]);
+
+        return false;
+    });
+
+    function setMenuIdForItem(me) {
+        var menuId = me.dataset.menuId;
+        document.querySelector("#addMenuItemForm input[name='menu-id']").value = menuId;
+        document.querySelector("#menuIdText").innerText = menuId;
+    }
+
+    var addMenuItemButtons = document.querySelectorAll(".add-menu-item");
+    for(i = 0; i < addMenuItemButtons.length; i++) {
+        addMenuItemButtons[i].addEventListener("click", function() {
+            setMenuIdForItem(this);
+        }, false);
+    }
+
+    //add functionality to add menu item form
+    document.querySelector("#addMenuItemForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        var inputData = getFormData(this);
+
+        addNewMenuItem(inputData["item-id"], inputData["item-name"], inputData["item-price"], inputData["menu-id"]);
+
+        return false;
+    });
+
+    var deleteItemButtons = document.querySelectorAll(".delete-item");
+    for(i = 0; i < deleteItemButtons.length; i++) {
+        deleteItemButtons[i].addEventListener("click", function() {
+            deleteMenuItem(this.dataset.itemId);
+        });
+    }
+
+
+</script>
+</body>
+</html>

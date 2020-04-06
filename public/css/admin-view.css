@@ -1,0 +1,148 @@
+.hide {
+    display: none !important;
+}
+
+.link {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.card {
+    display: inline-flex;
+    vertical-align: top;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 15rem;
+    position: relative;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.card .material-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0.15;
+    font-size: 12rem;
+
+    transition: opacity 0.25s ease-in;
+}
+
+.card .material-icons.flash {
+    opacity: 0.8;
+}
+
+
+.card:hover {
+    cursor: pointer;
+}
+
+
+.material-icons {
+    vertical-align: middle;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+#currentMenus li {
+    border-bottom: 1px solid #efefef;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+
+.menu-header {
+    position: relative;
+    font-size: 1.2em;
+    padding: 1rem;
+    background: #efefef;
+}
+
+#currentMenus li .material-icons.expand-menu {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: -0.75rem;
+}
+
+#currentMenus li .material-icons.delete-menu {
+     margin-right: 1rem;
+ }
+
+.menu-details {
+    border-left: 1px solid #efefef;
+    border-right: 1px solid #efefef;
+}
+
+.menu-details p {
+    padding: 1rem;
+    margin: 0;
+}
+
+.menu-header:hover {
+    cursor: pointer;
+}
+
+.no-items {
+    text-align: center;
+    padding: 0.5rem;
+    color: red;
+}
+.menu-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.menu-item:not(:last-child) {
+    border-bottom: 1px dotted #efefef;
+}
+
+.menu-item .item-id {
+    flex-basis: 3rem;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.menu-item .item-name {
+    flex-grow: 1;
+}
+
+.menu-item .action-buttons {
+
+}
+
+.add-menu-item-container {
+    padding: 1rem 0;
+}
+
+.add-menu-item {
+    display: block;
+    margin: 0 auto;
+}
+
+#addNewMenu {
+    margin: 0 auto;
+}
+
+form h2 {
+
+}
+
