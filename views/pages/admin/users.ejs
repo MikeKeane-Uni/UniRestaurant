@@ -3,39 +3,32 @@
 <head>
     <%- include('../../partials/head') %>
 
-    <link rel="stylesheet" type="text/css" href="/css/admin-view.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/admin-view.css" /> -->
 
 
 </head>
 <body>
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1>User Login</h1>
+        <h1>Staff</h1>
         <p>Restaurant Admin Area</p>
     </div>
 </div>
 
 <div class="container">
     <div class="row">
-        <ul id="currentUsers" class="col-sm-12 accordion">
-            <%
-            const users = JSON.parse(locals.users);
+        <div class="col-sm-12 col-md-4">
+            <div class="card">
+                 <div class="card-body">
+                     <h5 class="card-title">Mike Keane</h5>
 
-            for(let i = 0; i < users.length; i++) {
-                let user = users[i];
-            %>
-            <li>
-                <div class="menu-header" data-toggle="collapse" data-target="#user<%= user.user_id %>">
-                    <span class="material-icons delete-user">delete</span><span class="user-name"><%= user.name %> (<span class="user-id"><%= user.user_id %></span>)</span>
+                     <div class="card-footer">
+                        <button class="btn btn-secondary">Edit</button>
+                        <button class="btn btn-danger">Delete User</button>
+                     </div>
                 </div>
-
-            </li>
-            <%
-            }
-            %>
-        </ul>
-        <button id="addNewMenu" class="btn btn-success" data-toggle="modal" data-target="#addNewMenuModal">Add New Menu</button>
-
+            </div>
+        </div>
     </div>
 </div>
 

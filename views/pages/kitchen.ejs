@@ -9,115 +9,83 @@
 
 <!-- Will need to connect to the database to use the actual values of the orders rather than just flat strings. -->
 <table id="Orders_Table">
+    <tr>
+        <th>Table Number</th>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th> Order Time</th>
+        <th> Complete</th>
+    </tr>
 
-<tr>
-<th>Table Number</th>
-<th>Item Name</th>
-<th>Quantity</th>
-<th> Order Time</th>
-<th> Complete</th>
-</tr>
+    <tr>
+        <td>Table Number: 1</td>
+        <td>Salad</td>
+        <td>1</td>
+        <td><span id="minutes"></span>:<span id="seconds"></span></td>
+        <td><input type="submit" value ="Submit" onclick="removeItem(this)"></td>
+    </tr>
 
+    <tr>
+        <td>Table Number: 2</td>
+        <td>Steak</td>
+        <td>2</td>
+        <td><span id="minutes"></span>:<span id="seconds"></span></td>
+        <td><input type="submit" value ="Submit" onclick="removeItem(this)"></td>
+    </tr>
 
-<tr>
-<td>Table Number: 1</td>
-<td>Salad</td>
-<td>1</td>
-<td><span id="minutes"></span>:<span id="seconds"></span></td>
-<td><input type="submit" value ="Submit" onclick="removeItem(this)"></button></tr></td>
-</tr>
-
-<tr>
-<td>Table Number: 2</td>
-<td>Steak</td>
-<td>2</td>
-<td><span id="minutes"></span>:<span id="seconds"></span></td>
-<td><input type="submit" value ="Submit" onclick="removeItem(this)"></button></tr></td>
-</tr>
-
-
-<tr>
-    <td>Table Number: 3</td>
-    <td>Fries</td>
-    <td>4</td>
-    <td><span id="minutes"></span>:<span id="seconds"></span></td>
-    <td><input type="submit" value ="Submit" onclick="removeItem(this)"></td>
-</tr>
-
-
-
-
+    <tr>
+        <td>Table Number: 3</td>
+        <td>Fries</td>
+        <td>4</td>
+        <td><span id="minutes"></span>:<span id="seconds"></span></td>
+        <td><input type="submit" value ="Submit" onclick="removeItem(this)"></td>
+    </tr>
 </table>
 
 
 
 
 
+<%- include('../partials/bootstrapjs') %>
 
 <!-- Javascript for timed orders and colour chnage + removing the order from the table. -->
 
 <script>
 
-var sec = 0;
+    var sec = 0;
     function pad ( val ) { return val > 9 ? val : "0" + val; }
     setInterval( function(){
         document.getElementById("seconds").innerHTML=pad(++sec%60);
         document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
 
 
-if (sec < 4) {
-  var x = document.getElementById("Orders_Table").getElementsByTagName("td");
-    x[3].style.backgroundColor = "Green";  
-}
+        if (sec < 4) {
+            var x = document.getElementById("Orders_Table").getElementsByTagName("td");
+            x[3].style.backgroundColor = "Green";
+        }
 
-  else if (sec > 4) {
-    var x = document.getElementById("Orders_Table").getElementsByTagName("td");
-    x[3].style.backgroundColor = "Yellow";  
-  } 
+        else if (sec > 4) {
+            var x = document.getElementById("Orders_Table").getElementsByTagName("td");
+            x[3].style.backgroundColor = "Yellow";
+        }
 
-  if (sec >=9 ) {
-    var x = document.getElementById("Orders_Table").getElementsByTagName("td");
-    x[3].style.backgroundColor = "Red";  
-  } 
+        if (sec >=9 ) {
+            var x = document.getElementById("Orders_Table").getElementsByTagName("td");
+            x[3].style.backgroundColor = "Red";
+        }
 
-}, 1000);
+    }, 1000);
 
 
-    
-        function removeItem(me){
-            console.log(me.value);
-            var tableRow = me.parentNode.parentNode;
-            tableRow.parentNode.removeChild(tableRow);
 
-}
+    function removeItem(me){
+        console.log(me.value);
+        var tableRow = me.parentNode.parentNode;
+        tableRow.parentNode.removeChild(tableRow);
+
+    }
 
 
 </script>
 
-
-
-<!-- Needs connection to DB to remove the items from the whole system, on refresh
-
-
-
-
--->
-
-<script
-src="https://code.jquery.com/jquery-3.4.1.min.js"
-integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-crossorigin="anonymous"></script>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
 </body>
-
-
-
-
-
-<footer>
-
-
-</footer>
-

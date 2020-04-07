@@ -83,7 +83,9 @@ app.get('/waiter', (req, res) => {
 
 app.get('/kitchen', (req, res) => {
     console.log('GET /kitchen');
-    res.render('pages/kitchen');
+    res.render('pages/kitchen', {
+        pageTitle: 'Kitchen View | Uni Restaurant'
+    });
 });
 
 app.get('/counter', (req, res) => {
@@ -209,8 +211,8 @@ app.get('/admin/menus', (req, res) => {
 app.get('/admin/users', (req, res) => {
     console.log('GET /admin/users');
     db.Menus.find({}).then(menus => {
-        res.render('pages/admin/menus', {
-            pageTitle: 'Menu Options | Admin Area',
+        res.render('pages/admin/users', {
+            pageTitle: 'Users | Admin Area',
             menus: JSON.stringify(menus)
         });
     },failed => {
