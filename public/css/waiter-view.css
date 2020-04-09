@@ -37,4 +37,6 @@ form {
     flex: 2rem;
 }
 
-
+.form-error {
+    color: red;
+}

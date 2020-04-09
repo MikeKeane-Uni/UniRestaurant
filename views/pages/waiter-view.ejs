@@ -16,17 +16,20 @@
         </div>
 
         <div class="container" id="waiterApp">
-            <div id="itemDetails">
+            <form id="itemDetails">
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="number" class="form-control" id="tableNumber" placeholder="Table Number">
+                        <input type="number" class="form-control" name="table-number" id="tableNumber" placeholder="Table Number">
                     </div>
                     <div class="col-md-6">
-                        <input type="number" class="form-control" id="itemId" placeholder="Item ID">
+                        <input type="text" class="form-control" name="item-id" id="itemId" placeholder="Item ID">
+                        <div class="form-error"></div>
                     </div>
                 </div>
-                <button id="addToOrder" type="submit" class="btn btn-primary">Submit</button> <!--When submitted, info is supposed to go to card below-->
-            </div>
+
+                <button id="addToOrder" type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
             <div class="card"><!--table number and order displayed in card-->
                 <div class="card-body">
                     <h2>Order Summary</h2>
@@ -40,48 +43,113 @@
         </div>
 
         <script type="text/template" id="orderItemTemplate">
-            <span class="item-qty">{{ qty }}no</span>
+            <span class="item-qty">{{ quantity }}no</span>
             <span class="item-description">{{ name }}</span>
         </script>
 
 
         <!-- load bootstrap js -->
         <%- include('../partials/bootstrapjs') %>
-        <!-- load underscore.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"></script>
-        <!-- load backbone.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
         <!-- load socket.io -->
         <script src="/socket.io/socket.io.js"></script>
-        <!-- load custom page js -->
-        <script src="/js/waiter-view.js"></script>
 
-        <button onclick="testOrder()">Test</button>
+        <script src="/js/utility.js"></script>
 
         <script>
-            function testOrder() {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "http://localhost:8080/create-new-order", true);
-                xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify({
-                    items: [
-                        {
-                            quantity: 2,
-                            item_id: "1.1",
+            //open socket connection to enable sending orders via live connection
+            var kitchenIO = io('/kitchen');
+            kitchenIO.on("disconnect", function() {
+                alert("Socket disconnected, order will not be sent via live connection");
 
-                        },
-                        {
-                            item_id: "1.2"
-                        }
-                    ]
-                }));
+                //TODO: try to reconnect socket
+            });
+
+            <%
+            const menu = JSON.parse(locals.menu);
+            const menuItems = menu.items;
+            %>
+
+            var menu = {
+                <%
+                for(let i = 0; i < menuItems.length; i++) {
+                %>
+                <%- i !== 0 ? ',' : ''%>
+                "<%= menuItems[i].item_id %>": {
+                    "name": "<%= menuItems[i].name %>",
+                    "price": "<%= menuItems[i].price %>"
+                }
+                <%
+                }
+                %>
+            };
+
+
+
+
+            var orderItemTemplate = document.querySelector("#orderItemTemplate");
+            var orderList = new List(document.querySelector("#orderItems"), "item_id");
+            var addToOrder = document.querySelector("#itemDetails");
+            var addToOrderError = addToOrder.querySelector(".form-error");
+            addToOrder.addEventListener("submit", function(e) {
+                e.preventDefault();
+                var formData = getFormData(this);
+                var itemId = formData["item-id"];
+                var tableNumber = formData["table-number"];
+
+                var itemData = menu[formData["item-id"]];
+                if(itemData) {
+                    //clear error messages
+                    addToOrderError.innerText = "";
+                    //add item to list
+                    //add id, table number and qty to itemData
+                    itemData.item_id = itemId;
+                    itemData.table_number = tableNumber;
+
+                    if(!!orderList.getItemById(itemId)) {
+                        itemData.quantity += 1;
+                        orderList.getItemById(itemId).update(itemData);
+                        orderList.reDraw();
+                    } else {
+                        itemData.quantity = 1;
+                        //create order item
+                        var orderItem = new ListItem(itemData, "LI", orderItemTemplate);
+
+                        //add item to orderList
+                        orderList.add(orderItem);
+                    }
+
+                    //clear form but leave table number as is
+                    clearFormData(this, ["table-number"]);
+                } else {
+                    //show error - item not on menu
+                    addToOrderError.innerText = "Item ID not in menu";
+                }
+
+                return false;
+            }, false);
+        </script>
+
+        <script>
+            //submit order
+            var submitOrder = document.querySelector("#submitOrder");
+            submitOrder.addEventListener("click", function() {
+                var itemsToSave = orderList.getItems();
+                for(var i = 0; i < itemsToSave.length; i++) {
+                    itemsToSave[i] = itemsToSave[i].attributes;
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/orders/create", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send(JSON.stringify(orderList.getItems()));
 
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState === 4 && xhr.status === 200) {
-                        console.log("done");
+                        kitchenIO.emit("newOrder");
+                        location.reload();
                     }
-                }
-            }
+                };
+            }, false);
         </script>
     </body>
 </html>

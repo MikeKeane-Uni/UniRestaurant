@@ -3,89 +3,150 @@
 <head>
     <%- include('../partials/head') %>
 
-    <link rel="stylesheet" type="text/css" href="/css/kitchen-view.css" />
+    <link rel="stylesheet" type="text/css" href="css/kitchen-view.css" />
 </head>
 <body>
 
 <!-- Will need to connect to the database to use the actual values of the orders rather than just flat strings. -->
-<table id="Orders_Table">
-    <tr>
-        <th>Table Number</th>
-        <th>Item Name</th>
-        <th>Quantity</th>
-        <th> Order Time</th>
-        <th> Complete</th>
-    </tr>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="table-holder">
+                <table class="table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Table No.</th>
+                            <th>Quantity</th>
+                            <th>Item</th>
+                            <th>Time on Order</th>
+                            <th>Complete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsToDo">
 
-    <tr>
-        <td>Table Number: 1</td>
-        <td>Salad</td>
-        <td>1</td>
-        <td><span id="minutes"></span>:<span id="seconds"></span></td>
-        <td><input type="submit" value ="Submit" onclick="removeItem(this)"></td>
-    </tr>
+                    </tbody>
 
-    <tr>
-        <td>Table Number: 2</td>
-        <td>Steak</td>
-        <td>2</td>
-        <td><span id="minutes"></span>:<span id="seconds"></span></td>
-        <td><input type="submit" value ="Submit" onclick="removeItem(this)"></td>
-    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
 
-    <tr>
-        <td>Table Number: 3</td>
-        <td>Fries</td>
-        <td>4</td>
-        <td><span id="minutes"></span>:<span id="seconds"></span></td>
-        <td><input type="submit" value ="Submit" onclick="removeItem(this)"></td>
-    </tr>
-</table>
-
-
-
-
+<script type="text/template" id="orderItemTemplate">
+    <td class="table-number">{{ table_number }}</td>
+    <td>{{ quantity }}</td>
+    <td class="item-name">{{ item_name }}</td>
+    <td class="item-timer"><span class="minutes">00</span>:<span class="seconds">00</span></td>
+    <td><input type="submit" value ="Submit" data-id="{{ _id }}" onclick="removeItem(this)"></td>
+</script>
 
 <%- include('../partials/bootstrapjs') %>
 
-<!-- Javascript for timed orders and colour chnage + removing the order from the table. -->
-
+<!-- Javascript for timed orders and colour change + removing the order from the table. -->
 <script>
-
-    var sec = 0;
+    //adds leading zero to numbers less than 10
     function pad ( val ) { return val > 9 ? val : "0" + val; }
-    setInterval( function(){
-        document.getElementById("seconds").innerHTML=pad(++sec%60);
-        document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
 
+    //set off timer
+    function startTimer(el, msSinceOrdered) {
+        var sec = msSinceOrdered / 1000;
+        //attach timer to element so it can be cancelled (otherwise, it will continue to run in the background.
+        //may even throw errors due to element not being found
+        el.timer = setInterval(function() {
+            el.querySelector(".seconds").innerHTML = pad(parseInt(++sec % 60, 10));
+            el.querySelector(".minutes").innerHTML = pad(parseInt(sec / 60, 10));
 
-        if (sec < 4) {
-            var x = document.getElementById("Orders_Table").getElementsByTagName("td");
-            x[3].style.backgroundColor = "Green";
-        }
+            //these timings would be changed in reality
+            if (sec < 30) {
+                el.style.backgroundColor = "Green";
+            }
 
-        else if (sec > 4) {
-            var x = document.getElementById("Orders_Table").getElementsByTagName("td");
-            x[3].style.backgroundColor = "Yellow";
-        }
+            else if (sec > 30) {
+                el.style.backgroundColor = "Yellow";
+            }
 
-        if (sec >=9 ) {
-            var x = document.getElementById("Orders_Table").getElementsByTagName("td");
-            x[3].style.backgroundColor = "Red";
-        }
+            if (sec >= 60 ) {
+                el.style.backgroundColor = "Red";
+            }
 
-    }, 1000);
-
-
-
-    function removeItem(me){
-        console.log(me.value);
-        var tableRow = me.parentNode.parentNode;
-        tableRow.parentNode.removeChild(tableRow);
-
+        }, 1000);
     }
-
-
 </script>
 
+<!-- load bootstrap js -->
+<%- include('../partials/bootstrapjs') %>
+<!-- load socket.io -->
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="/js/utility.js"></script>
+
+<script>
+    //open socket connection to enable sending orders via live connection
+    var socket = io('/kitchen');
+    socket.on("disconnect", function() {
+        alert("Socket disconnected, order will not be sent via live connection");
+
+        //TODO: try to reconnect to socket
+    });
+
+    socket.on("newOrder", function(data) {
+        for(var i = 0; i < data.order_items.length; i++) {
+            createNewItem(data.order_items[i]);
+        }
+    });
+</script>
+
+<script>
+    var menuItems = <%- locals.allItems %>;
+
+    function findMenuItemById(itemId) {
+        for(var i = 0; i < menuItems.length; i++) {
+            if(menuItems[i].item_id === itemId) {
+                return menuItems[i];
+            }
+        }
+    }
+
+    var orderItemTemplate = document.querySelector("#orderItemTemplate");
+    var itemList = new List(document.querySelector("#itemsToDo"), "item_id");
+
+
+    var loadedItems = <%- locals.itemsToComplete %>;
+
+    for(var i = 0; i < loadedItems.length; i++) {
+        createNewItem(loadedItems[i]);
+    }
+
+    function createNewItem(orderItemData) {
+        var ts = orderItemData._id.substring(0,8);
+        var createdAt = new Date( parseInt( ts, 16 ) * 1000 )
+
+        var itemData = orderItemData;
+        itemData.item_name = findMenuItemById(orderItemData.item_id).name;
+        var qty = itemData.quantity;
+        itemData.quantity = 1;
+
+        //crate single items (split up quantity)
+        for(var i = 0; i < qty; i++) {
+            var item = new ListItem(itemData, "tr", orderItemTemplate);
+            itemList.add(item);
+            startTimer(item.DOMel, new Date() - createdAt);
+        }
+    }
+
+    function removeItem(me) {
+        var tableRow = me.parentNode.parentNode;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("PUT", "/orders/items/complete/" + me.dataset.id, true);
+        xhr.send();
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                itemList.remove({_id: me.dataset.id});
+            }
+        }
+        //tableRow.parentNode.removeChild(tableRow);
+    }
+</script>
 </body>

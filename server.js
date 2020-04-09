@@ -73,18 +73,45 @@ app.get('/test', (req, res) => {
     res.end();
 });
 
-//renders the waiter view for taking orders
+app.get('/', (req, res) => {
+    res.render('pages/index', {pageTitle: 'Home | Uni Restaurant'})
+});
+
+//renders the waiter view for selecting menu
 app.get('/waiter', (req, res) => {
     console.log('GET /waiter');
-    res.render('pages/waiter-view', {
-        pageTitle: 'Waiter View | Uni Restaurant'
+    db.Menus.find({}).then(menus => {
+        res.render('pages/menu-select', {
+            pageTitle: 'Menu Selection | Waiter Area',
+            menus: JSON.stringify(menus)
+        });
+    }, error => {
+
+        res.end();
     });
+});
+//renders the waiter view for taking orders
+app.get('/waiter/create-order/:menuName', (req, res) => {
+    console.log('GET /waiter/' + req.params.menuName);
+    db.Menus.findOne({name: decodeURIComponent(req.params.menuName)}).then(menu => {
+        console.log(menu);
+        res.render('pages/waiter-view', {
+            pageTitle: 'Create Order | Waiter Area',
+            menu: JSON.stringify(menu)
+        });
+    })
 });
 
 app.get('/kitchen', (req, res) => {
     console.log('GET /kitchen');
-    res.render('pages/kitchen', {
-        pageTitle: 'Kitchen View | Uni Restaurant'
+    db.MenuItems.find({}).then(menuItems => {
+        db.OrderItems.find({completed: false}).then(itemsToComplete => {
+            res.render('pages/kitchen', {
+                pageTitle: 'Kitchen View | Uni Restaurant',
+                allItems: JSON.stringify(menuItems),
+                itemsToComplete: JSON.stringify(itemsToComplete)
+            });
+        });
     });
 });
 
@@ -145,6 +172,52 @@ app.get('/orders', (req, res) => {
     }, failed => {
         res.status(500).send({err: failed});
     })
+});
+
+app.post('/orders/create', (req, res) => {
+    console.log('New Order Received');
+    //const tableNumber = req.body.table_number;
+    console.log(req.body.length);
+    let updates = [];
+    for(let i = 0; i < req.body.length; i++) {
+        var qty = req.body[i].quantity;
+        console.log("Quantity");
+        console.log(qty);
+        for(let j = 0; j < qty; j++) {
+            req.body[i].quantity = 1;
+            console.log(req.body[i]);
+            let update = db.OrderItems.create(req.body[i]);
+            updates.push(update);
+        }
+    }
+
+    Promise.all(updates).then(orderItems => {
+        console.log(orderItems);
+        db.Orders.find({}).sort({order_id: -1}).limit(1).then(order => {
+            const orderId = order.length > 0 ? order[0].order_id + 1 : 1;
+            db.Orders.create({order_id: orderId, order_items: orderItems}).then(newOrder => {
+                kitchenIO.emit("newOrder", newOrder);
+                console.log(newOrder);
+            });
+        })
+    });
+
+    res.end();
+    /*
+    db.Orders.create(req.body).then(order => {
+        res.send('Order created');
+
+    }, failed => {
+        res.status(500).send({err: failed});
+    });
+    */
+});
+
+app.put('/orders/items/complete/:idString', (req, res) => {
+    db.OrderItems.findOneAndUpdate({_id: db.ObjectId(req.params.idString)}, {completed: true}).then(updated => {
+        console.log(updated);
+        return res.status(200).send("Marked as complete");
+    });
 });
 
 

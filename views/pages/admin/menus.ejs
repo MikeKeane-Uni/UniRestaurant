@@ -216,6 +216,8 @@
     }
 
     function addNewMenu(menuId, menuName) {
+        //tidy up menu name, replace multiple spaces with single spaces and remove trailing/leading spaces
+        menuName = menuName.trim().replace(/\s+/g, " ");
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "api/menus", true);
         xhr.setRequestHeader("Content-type", "application/json");
