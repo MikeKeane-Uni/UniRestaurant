@@ -36,6 +36,16 @@ function parseTemplate(template, data) {
     return html;
 }
 
+Array.prototype.findObjectInArray = function(property, value) {
+    for(var i = 0; i < this.length; i++) {
+        if(this[i][property] === value) {
+            return this[i];
+        }
+    }
+
+    return null;
+};
+
 //lists
 function ListItem(attributes, tagName, template) {
     if(!(this instanceof ListItem)) {

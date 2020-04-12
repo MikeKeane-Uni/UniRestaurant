@@ -92,7 +92,7 @@ app.get('/waiter', (req, res) => {
 });
 //renders the waiter view for taking orders
 app.get('/waiter/create-order/:menuName', (req, res) => {
-    console.log('GET /waiter/' + req.params.menuName);
+    console.log('GET /waiter/create-order' + req.params.menuName);
     db.Menus.findOne({name: decodeURIComponent(req.params.menuName)}).then(menu => {
         console.log(menu);
         res.render('pages/waiter-view', {

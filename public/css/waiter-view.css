@@ -40,3 +40,54 @@ form {
 .form-error {
     color: red;
 }
+
+.material-icons {
+    vertical-align: middle;
+}
+
+.item-qty {
+    display: inline-flex;
+    vertical-align: middle;
+    padding: 0.5rem;
+    border: 1px solid #eaeaea;
+    width: 8rem;
+    justify-content: space-between;
+}
+
+@-webkit-keyframes ITEM-ADDED {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+@-moz-keyframes ITEM-ADDED {
+    0%   { opacity: 0; }
+    50%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+@-o-keyframes ITEM-ADDED {
+    0%   { opacity: 0; }
+    50%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+@keyframes ITEM-ADDED {
+    0%   { opacity: 0; }
+    50%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.added-text {
+    margin-left: 0.5rem;
+    color: green;
+    opacity: 0;
+}
+
+.added-text.yes {
+    -webkit-animation: ITEM-ADDED 1s; /* Safari 4+ */
+    -moz-animation:    ITEM-ADDED 1s; /* Fx 5+ */
+    -o-animation:      ITEM-ADDED 1s; /* Opera 12+ */
+    animation:         ITEM-ADDED 1s; /* IE 10+, Fx 29+ */
+}
+
+.hide {
+    display: none !important;
+}

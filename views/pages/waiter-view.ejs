@@ -8,6 +8,10 @@
 
     </head>
     <body>
+    <%
+    const menu = JSON.parse(locals.menu);
+    const menuItems = menu.items;
+    %>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1>Restaurant</h1>
@@ -19,15 +23,34 @@
             <form id="itemDetails">
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="number" class="form-control" name="table-number" id="tableNumber" placeholder="Table Number">
+                        <input type="number" class="form-control" name="table-number" id="tableNumber" placeholder="Table Number" min="1" step="1" required>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="item-id" id="itemId" placeholder="Item ID">
+                        <input type="text" class="form-control" name="item-id" id="itemId" placeholder="Item ID" required>
                         <div class="form-error"></div>
                     </div>
                 </div>
 
-                <button id="addToOrder" type="submit" class="btn btn-primary">Submit</button>
+                <div data-toggle="collapse" data-target="#selectedMenu">
+                    Show Menu <span class="material-icons">add</span>
+                </div>
+
+                <div id="selectedMenu" class="collapse">
+                    <div id="menuSearch">
+                        <input class="form-control" type="search" />
+                    </div>
+                    <div class="item-holder">
+                    <%
+                    for(let i = 0; i < menuItems.length; i++) {
+                    %>
+                        <div data-toggle="collapse" data-target="#selectedMenu" data-item-id="<%= menuItems[i].item_id %>" class="menu-item-select"><%= menuItems[i].item_id %>: <%= menuItems[i].name %></div>
+                    <%
+                    }
+                    %>
+                    </div>
+                </div>
+
+                <button id="addToOrder" type="submit" class="btn btn-primary">Submit</button><span class="added-text">Item added</span>
 
             </form>
             <div class="card"><!--table number and order displayed in card-->
@@ -43,7 +66,7 @@
         </div>
 
         <script type="text/template" id="orderItemTemplate">
-            <span class="item-qty">{{ quantity }}no</span>
+            <span class="item-qty"><span class="material-icons">remove</span>{{ quantity }}<span class="material-icons">add</span></span>
             <span class="item-description">{{ name }}</span>
         </script>
 
@@ -64,11 +87,6 @@
                 //TODO: try to reconnect socket
             });
 
-            <%
-            const menu = JSON.parse(locals.menu);
-            const menuItems = menu.items;
-            %>
-
             var menu = {
                 <%
                 for(let i = 0; i < menuItems.length; i++) {
@@ -83,8 +101,14 @@
                 %>
             };
 
+            var itemSelects = document.querySelectorAll(".menu-item-select");
 
-
+            for(i = 0; i < itemSelects.length; i++) {
+                itemSelects[i].addEventListener("click", function() {
+                    console.log("Select item");
+                    document.querySelector("#itemId").value = this.dataset.itemId;
+                }, false);
+            }
 
             var orderItemTemplate = document.querySelector("#orderItemTemplate");
             var orderList = new List(document.querySelector("#orderItems"), "item_id");
@@ -141,7 +165,7 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/orders/create", true);
                 xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.send(JSON.stringify(orderList.getItems()));
+                xhr.send(JSON.stringify(itemsToSave));
 
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState === 4 && xhr.status === 200) {
@@ -149,6 +173,24 @@
                         location.reload();
                     }
                 };
+            }, false);
+
+            var menuSearch = document.querySelector("#menuSearch input");
+            var selectedMenu = document.querySelector("#selectedMenu");
+            var itemHolder = selectedMenu.querySelector(".item-holder");
+            var items = selectedMenu.querySelectorAll(".item-holder > div");
+
+            menuSearch.addEventListener("input", function() {
+                console.log(this);
+                console.log(this.value.toLowerCase().trim());
+                for(var i = 0; i < items.length; i++) {
+                    console.log(i);
+                    if(items[i].innerText.toLowerCase().trim().indexOf(this.value.toLowerCase().trim()) === -1) {
+                        items[i].classList.add("hide");
+                    } else {
+                        items[i].classList.remove("hide");
+                    }
+                }
             }, false);
         </script>
     </body>

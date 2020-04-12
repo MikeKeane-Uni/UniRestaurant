@@ -37,7 +37,7 @@
     <td>{{ quantity }}</td>
     <td class="item-name">{{ item_name }}</td>
     <td class="item-timer"><span class="minutes">00</span>:<span class="seconds">00</span></td>
-    <td><input type="submit" value ="Submit" data-id="{{ _id }}" onclick="removeItem(this)"></td>
+    <td><input class="btn btn-danger" type="submit" value="Complete" data-id="{{ _id }}" onclick="removeItem(this)"></td>
 </script>
 
 <%- include('../partials/bootstrapjs') %>
