@@ -89,7 +89,7 @@ module.exports = {
     MenuItems: mongoose.model('MenuItem', MenuItemSchema),
     Orders: mongoose.model('Order', OrderSchema),
     OrderItems: mongoose.model('OrderItem', OrderItemSchema),
-    Users: mongoose.model('Users', UserSchema),
+    Users: mongoose.model('User', UserSchema),
     CompletedOrders: mongoose.model('CompletedOrder', OrderSchema),
     ObjectId: ObjectId
 };

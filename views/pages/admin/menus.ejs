@@ -130,6 +130,8 @@
 <!-- load socket.io -->
 <script src="/socket.io/socket.io.js"></script>
 
+<script src="/js/utility.js"></script>
+
 <script>
     var socket = io("/menus");
 
@@ -305,35 +307,6 @@
                 }
             });
         })(i);
-    }
-
-    //retrieves all input name/value pairs
-    //TODO: need to make it ignore hidden inputs
-    function getFormData(form) {
-        var inputs = form.querySelectorAll("input");
-        var data = {};
-        for(var i = 0; i < inputs.length; i++ ) {
-            if(inputs[i].type === "submit" || inputs[i].type === "reset") {
-                continue;
-            }
-            data[inputs[i].name] = inputs[i].value;
-        }
-
-        return data;
-    }
-
-    function clearFormData(form) {
-        var inputs = form.querySelectorAll("input");
-
-        for(var i = 0; i < inputs.length; i++ ) {
-            if(inputs[i].type === "submit" || inputs[i].type === "reset") {
-                continue;
-            }
-
-            inputs[i].value = "";
-        }
-
-        return data;
     }
 
     //add functionality to add menu form

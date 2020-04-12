@@ -284,9 +284,10 @@ app.get('/admin/menus', (req, res) => {
 app.get('/admin/users', (req, res) => {
     console.log('GET /admin/users');
     db.Users.find({}).then(users => {
+        console.log(users);
         res.render('pages/admin/users', {
             pageTitle: 'Users | Admin Area',
-            menus: JSON.stringify(users)
+            users: users
         });
     },failed => {
         res.status(500).send({err: failed});

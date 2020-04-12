@@ -64,6 +64,9 @@
     </style>
 </head>
 <body>
+<%
+const users = locals.users;
+ %>
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1>Staff</h1>
@@ -75,7 +78,7 @@
     <div class="row">
         <div class="col">
             <div class="action-buttons">
-                <button class="btn btn-success">Add New User</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#addUserModal">Add New User</button>
             </div>
         </div>
     </div>
@@ -107,6 +110,26 @@
                 </div>
             </div>
         </div>
+        <%
+        for(let i = 0; i < users.length; i++) {
+            let user = users[i];
+        %>
+        <div class="col-sm-12 col-md-4">
+            <div class="card no-padding">
+                <div class="card-body">
+                    <h5 class="card-title"><%= user.name %></h5>
+                    <p>Manager</p>
+                    <div class="btn active-user border-success bg-success"></div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-secondary">Edit</button>
+                    <button class="btn btn-danger">Delete User</button>
+                </div>
+            </div>
+        </div>
+        <%
+        }
+        %>
     </div>
 </div>
 
@@ -122,16 +145,21 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>User's Name</label>
+                    <label>User Id</label>
+                    <input class="form-control" type="text" name="user-id" />
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
                     <input class="form-control" type="text" name="name" />
                 </div>
                 <div class="form-group">
-                    <label>Item Name</label>
-                    <input class="form-control" type="text" name="item-name" />
+                    <label>Password</label>
+                    <input class="form-control" type="password" name="password" />
                 </div>
+
                 <div class="form-group">
-                    <label>Item Price</label>
-                    <input class="form-control" type="text" name="item-price" />
+                    <label>Confirm Password</label>
+                    <input class="form-control" type="password" name="confirm-password" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -151,8 +179,31 @@
 <!-- load socket.io -->
 <script src="/socket.io/socket.io.js"></script>
 
-<script>
+<script src="/js/utility.js"></script>
 
+<script>
+    function addUser(userId, userName, userPassword) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "api/users", true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(JSON.stringify({user_id: userId, name: userName, password: userPassword}));
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+
+    document.querySelector("#addUserForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        var inputData = getFormData(this);
+
+        addUser(inputData["user-id"], inputData["name"], inputData["password"]);
+
+        return false;
+    });
 </script>
 
 </body>

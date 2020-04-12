@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b94c9309-507e-4970-b9de-937f67b96d17" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/db-connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/db-connection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/pages/admin/menus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/admin/menus.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/pages/admin/users.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/admin/users.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/waiter-view.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/waiter-view.ejs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="390" column="18" lean-forward="true" selection-start-line="390" selection-start-column="18" selection-end-line="390" selection-end-column="18" />
+            <state relative-caret-position="67">
+              <caret line="286" column="27" selection-start-line="286" selection-start-column="27" selection-end-line="286" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -26,17 +27,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/db-connection.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="535">
-              <caret line="93" column="22" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
+            <state relative-caret-position="190">
+              <caret line="91" column="31" selection-start-line="91" selection-start-column="31" selection-end-line="91" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/pages/waiter-view.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="29">
-              <caret line="38" column="58" selection-start-line="38" selection-start-column="58" selection-end-line="38" selection-end-column="58" />
+            <state relative-caret-position="52">
+              <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="82" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -62,8 +63,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/pages/admin/menus.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="95" lean-forward="true" selection-start-line="95" selection-end-line="125" selection-end-column="6" />
+            <state relative-caret-position="-115">
+              <caret line="25" column="14" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="25" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -71,7 +72,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/utility.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
+            <state relative-caret-position="1817">
               <caret line="79" column="36" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="36" />
             </state>
           </provider>
@@ -95,11 +96,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/pages/admin/users.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="93" column="14" lean-forward="true" selection-start-line="85" selection-start-column="8" selection-end-line="93" selection-end-column="14" />
+            <state relative-caret-position="167">
+              <caret line="67" column="26" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -116,14 +117,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>orderItems</find>
       <find>add</find>
       <find>sync</find>
       <find>api</find>
       <find>OrderItemView</find>
       <find>todo</find>
       <find>getForm</find>
-      <find>getFormD</find>
       <find>itemDetails</find>
       <find>getItems</find>
       <find>reDra</find>
@@ -145,6 +144,8 @@
       <find>submitOrder</find>
       <find>keyfr</find>
       <find>item-qty</find>
+      <find>modal</find>
+      <find>getFormD</find>
       <find>admin/us</find>
     </findStrings>
   </component>
@@ -170,19 +171,19 @@
         <option value="$PROJECT_DIR$/views/partials/head.ejs" />
         <option value="$PROJECT_DIR$/views/pages/admin/home.ejs" />
         <option value="$PROJECT_DIR$/views/partials/bootstrapjs.ejs" />
-        <option value="$PROJECT_DIR$/views/pages/admin/menus.ejs" />
         <option value="$PROJECT_DIR$/public/js/waiter-view.js" />
         <option value="$PROJECT_DIR$/views/pages/menu-select.ejs" />
         <option value="$PROJECT_DIR$/public/css/admin-view.css" />
         <option value="$PROJECT_DIR$/public/css/kitchen-view.css" />
-        <option value="$PROJECT_DIR$/db-connection.js" />
         <option value="$PROJECT_DIR$/views/pages/kitchen.ejs" />
         <option value="$PROJECT_DIR$/views/pages/index.ejs" />
         <option value="$PROJECT_DIR$/public/js/utility.js" />
         <option value="$PROJECT_DIR$/public/css/waiter-view.css" />
+        <option value="$PROJECT_DIR$/views/pages/waiter-view.ejs" />
+        <option value="$PROJECT_DIR$/views/pages/admin/menus.ejs" />
+        <option value="$PROJECT_DIR$/db-connection.js" />
         <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/views/pages/admin/users.ejs" />
-        <option value="$PROJECT_DIR$/views/pages/waiter-view.ejs" />
       </list>
     </option>
   </component>
@@ -300,19 +301,19 @@
       <workItem from="1585129718078" duration="2047000" />
       <workItem from="1585512986260" duration="10405000" />
       <workItem from="1585594151025" duration="221174000" />
-      <workItem from="1586728014197" duration="2743000" />
+      <workItem from="1586728014197" duration="4048000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="368696000" />
+    <option name="totallyTimeSpent" value="370001000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.11497731" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.11497731" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Database Changes" order="1" />
@@ -321,7 +322,7 @@
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" weight="0.32649574" />
-      <window_info anchor="bottom" id="Run" order="7" visible="true" weight="0.37435898" />
+      <window_info active="true" anchor="bottom" id="Run" order="7" visible="true" weight="0.37435898" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
@@ -498,36 +499,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/utility.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
+        <state relative-caret-position="1817">
           <caret line="79" column="36" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/pages/admin/menus.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="95" lean-forward="true" selection-start-line="95" selection-end-line="125" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="390" column="18" lean-forward="true" selection-start-line="390" selection-start-column="18" selection-end-line="390" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db-connection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="93" column="22" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/pages/admin/users.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="93" column="14" lean-forward="true" selection-start-line="85" selection-start-column="8" selection-end-line="93" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -540,8 +513,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/pages/waiter-view.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="38" column="58" selection-start-line="38" selection-start-column="58" selection-end-line="38" selection-end-column="58" />
+        <state relative-caret-position="52">
+          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="82" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db-connection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="91" column="31" selection-start-line="91" selection-start-column="31" selection-end-line="91" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/pages/admin/menus.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-115">
+          <caret line="25" column="14" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="25" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="286" column="27" selection-start-line="286" selection-start-column="27" selection-end-line="286" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/pages/admin/users.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="67" column="26" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
         </state>
       </provider>
     </entry>
