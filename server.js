@@ -283,10 +283,10 @@ app.get('/admin/menus', (req, res) => {
 
 app.get('/admin/users', (req, res) => {
     console.log('GET /admin/users');
-    db.Menus.find({}).then(menus => {
+    db.Users.find({}).then(users => {
         res.render('pages/admin/users', {
             pageTitle: 'Users | Admin Area',
-            menus: JSON.stringify(menus)
+            menus: JSON.stringify(users)
         });
     },failed => {
         res.status(500).send({err: failed});
@@ -381,5 +381,14 @@ app.delete('/admin/api/menu-items/:id', (req, res) => {
                 res.end('Removed ' + menuItem.item_id);
             });
         });
+    });
+});
+
+app.post('/admin/api/users', (req, res) => {
+    db.Users.create(req.body).then(user => {
+        //menusIO.emit("newMenuAdded", user);
+        res.end('New user added');
+    }, failed => {
+        return res.status(500).send({error: failed});
     });
 });
