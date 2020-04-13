@@ -50,7 +50,7 @@ form {
     vertical-align: middle;
     padding: 0.5rem;
     border: 1px solid #eaeaea;
-    width: 8rem;
+    width: 6rem;
     justify-content: space-between;
 }
 
@@ -90,4 +90,13 @@ form {
 
 .hide {
     display: none !important;
+}
+
+#selectedMenu > div {
+    padding: 1rem;
+    background: #fafafa;
+}
+
+.menu-item-select {
+    padding: 1rem;
 }

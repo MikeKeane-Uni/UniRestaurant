@@ -153,3 +153,7 @@ form h2 {
 
 }
 
+.form-error {
+    color: red;
+    padding: 1rem 0;
+}

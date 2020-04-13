@@ -31,30 +31,32 @@
                     </div>
                 </div>
 
-                <div data-toggle="collapse" data-target="#selectedMenu">
+                <div style="padding: 1rem 0" data-toggle="collapse" data-target="#selectedMenu">
                     Show Menu <span class="material-icons">add</span>
                 </div>
 
                 <div id="selectedMenu" class="collapse">
-                    <div id="menuSearch"class="input-group">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="userFilter">Search</label>
+                    <div>
+                        <div id="menuSearch"class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="userFilter">Search</label>
+                            </div>
+                                <input class="form-control" type="search" />
                         </div>
-                            <input class="form-control" type="search" />
-                    </div>
 
-                    <div class="item-holder">
-                    <%
-                    for(let i = 0; i < menuItems.length; i++) {
-                    %>
-                        <div data-toggle="collapse" data-target="#selectedMenu" data-item-id="<%= menuItems[i].item_id %>" class="menu-item-select"><%= menuItems[i].item_id %>: <%= menuItems[i].name %></div>
-                    <%
-                    }
-                    %>
+                        <div class="item-holder">
+                        <%
+                        for(let i = 0; i < menuItems.length; i++) {
+                        %>
+                            <div data-toggle="collapse" data-target="#selectedMenu" data-item-id="<%= menuItems[i].item_id %>" class="menu-item-select"><%= menuItems[i].item_id %>: <%= menuItems[i].name %></div>
+                        <%
+                        }
+                        %>
+                        </div>
                     </div>
                 </div>
 
-                <button id="addToOrder" type="submit" class="btn btn-primary">Submit</button><span class="added-text">Item added</span>
+                <button id="addToOrder" type="submit" class="btn btn-primary">Add to Order</button><span class="added-text">Item added</span>
 
             </form>
             <div class="card"><!--table number and order displayed in card-->
@@ -145,7 +147,10 @@
                         //add item to orderList
                         orderList.add(orderItem);
                     }
-
+                    document.querySelector(".added-text").classList.add("yes");
+                    setTimeout(function() {
+                        document.querySelector(".added-text").classList.remove("yes");
+                    }, 1000);
                     //clear form but leave table number as is
                     clearFormData(this, ["table-number"]);
                 } else {

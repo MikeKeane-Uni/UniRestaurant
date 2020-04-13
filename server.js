@@ -272,7 +272,7 @@ app.get('/admin', (req, res) => {
 app.get('/admin/menus', (req, res) => {
     console.log('GET /admin/menus');
     db.Menus.find({}).then(menus => {
-        res.render('pages/admin/menus', {
+        res.render('pages/admin/menus2', {
             pageTitle: 'Menu Options | Admin Area',
             menus: JSON.stringify(menus)
         });

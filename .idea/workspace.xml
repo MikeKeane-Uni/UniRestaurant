@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b94c9309-507e-4970-b9de-937f67b96d17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/db-connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/db-connection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/admin-view.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/admin-view.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/waiter-view.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/waiter-view.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/admin/menus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/admin/menus.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/admin/users.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/admin/users.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/pages/waiter-view.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/waiter-view.ejs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="67">
-              <caret line="286" column="27" selection-start-line="286" selection-start-column="27" selection-end-line="286" selection-end-column="27" />
+            <state relative-caret-position="122">
+              <caret line="274" column="38" selection-start-line="274" selection-start-column="38" selection-end-line="274" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -33,20 +33,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/pages/waiter-view.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="52">
-              <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="82" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/admin-view.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3542">
-              <caret line="154" selection-start-line="154" selection-end-line="154" />
+            <state relative-caret-position="68">
+              <caret line="33" column="21" lean-forward="true" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
+              <folding>
+                <element signature="n#style#0;n#div#1;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -54,8 +48,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/waiter-view.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="91" column="29" selection-start-line="91" selection-start-column="29" selection-end-line="91" selection-end-column="29" />
+            <state relative-caret-position="190">
+              <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/css/admin-view.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="122">
+              <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -72,17 +75,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/utility.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1817">
+            <state relative-caret-position="1587">
               <caret line="79" column="36" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/pages/kitchen.ejs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="897">
-              <caret line="39" column="67" selection-start-line="39" selection-start-column="67" selection-end-line="39" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -96,11 +90,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/pages/admin/users.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="67" column="26" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
+            <state relative-caret-position="144">
+              <caret line="189" lean-forward="true" selection-start-line="189" selection-end-line="189" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/pages/admin/menus2.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="206">
+              <caret line="107" column="40" selection-start-line="107" selection-start-column="40" selection-end-line="107" selection-end-column="40" />
+              <folding>
+                <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -117,23 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>add</find>
-      <find>sync</find>
-      <find>api</find>
-      <find>OrderItemView</find>
-      <find>todo</find>
-      <find>getForm</find>
-      <find>itemDetails</find>
-      <find>getItems</find>
-      <find>reDra</find>
-      <find>addNewMenu</find>
-      <find>menu-items</find>
-      <find>create</find>
-      <find>qty</find>
-      <find>api/menu</find>
-      <find>save</find>
-      <find>socket</find>
-      <find>Orders_</find>
       <find>/kitchen</find>
       <find>ListItem</find>
       <find>create/order</find>
@@ -147,6 +136,23 @@
       <find>modal</find>
       <find>getFormD</find>
       <find>admin/us</find>
+      <find>pages/admin/menus</find>
+      <find>menu id was no</find>
+      <find>form-error</find>
+      <find>displayMenu</find>
+      <find>setMenuId</find>
+      <find>displayNewMenu</find>
+      <find>addMenuIdForMenuItem</find>
+      <find>addMenuIdForItem</find>
+      <find>addMenu</find>
+      <find>setMenuIdForItem</find>
+      <find>item ID</find>
+      <find>submit</find>
+      <find>added-</find>
+      <find>itemMod</find>
+      <find>yes</find>
+      <find>added-text</find>
+      <find>show menu</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -173,17 +179,18 @@
         <option value="$PROJECT_DIR$/views/partials/bootstrapjs.ejs" />
         <option value="$PROJECT_DIR$/public/js/waiter-view.js" />
         <option value="$PROJECT_DIR$/views/pages/menu-select.ejs" />
-        <option value="$PROJECT_DIR$/public/css/admin-view.css" />
         <option value="$PROJECT_DIR$/public/css/kitchen-view.css" />
         <option value="$PROJECT_DIR$/views/pages/kitchen.ejs" />
         <option value="$PROJECT_DIR$/views/pages/index.ejs" />
         <option value="$PROJECT_DIR$/public/js/utility.js" />
-        <option value="$PROJECT_DIR$/public/css/waiter-view.css" />
-        <option value="$PROJECT_DIR$/views/pages/waiter-view.ejs" />
         <option value="$PROJECT_DIR$/views/pages/admin/menus.ejs" />
         <option value="$PROJECT_DIR$/db-connection.js" />
-        <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/views/pages/admin/users.ejs" />
+        <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/views/pages/admin/menus2.ejs" />
+        <option value="$PROJECT_DIR$/public/css/admin-view.css" />
+        <option value="$PROJECT_DIR$/views/pages/waiter-view.ejs" />
+        <option value="$PROJECT_DIR$/public/css/waiter-view.css" />
       </list>
     </option>
   </component>
@@ -301,19 +308,19 @@
       <workItem from="1585129718078" duration="2047000" />
       <workItem from="1585512986260" duration="10405000" />
       <workItem from="1585594151025" duration="221174000" />
-      <workItem from="1586728014197" duration="4048000" />
+      <workItem from="1586728014197" duration="10110000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="370001000" />
+    <option name="totallyTimeSpent" value="376063000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.11497731" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.11497731" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Database Changes" order="1" />
@@ -322,7 +329,7 @@
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" weight="0.32649574" />
-      <window_info active="true" anchor="bottom" id="Run" order="7" visible="true" weight="0.37435898" />
+      <window_info anchor="bottom" id="Run" order="7" visible="true" weight="0.37435898" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
@@ -476,13 +483,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/admin-view.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3542">
-          <caret line="154" selection-start-line="154" selection-end-line="154" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/pages/kitchen.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="897">
@@ -494,27 +494,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="989">
           <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/utility.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1817">
-          <caret line="79" column="36" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/waiter-view.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="91" column="29" selection-start-line="91" selection-start-column="29" selection-end-line="91" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/pages/waiter-view.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="82" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -532,17 +511,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
+    <entry file="file://$PROJECT_DIR$/views/pages/admin/users.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="67">
-          <caret line="286" column="27" selection-start-line="286" selection-start-column="27" selection-end-line="286" selection-end-column="27" />
+        <state relative-caret-position="144">
+          <caret line="189" lean-forward="true" selection-start-line="189" selection-end-line="189" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/pages/admin/users.ejs">
+    <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="67" column="26" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
+        <state relative-caret-position="122">
+          <caret line="274" column="38" selection-start-line="274" selection-start-column="38" selection-end-line="274" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/utility.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1587">
+          <caret line="79" column="36" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/admin-view.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/pages/admin/menus2.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="107" column="40" selection-start-line="107" selection-start-column="40" selection-end-line="107" selection-end-column="40" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/waiter-view.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/pages/waiter-view.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="33" column="21" lean-forward="true" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
