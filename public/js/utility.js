@@ -36,7 +36,7 @@ function parseTemplate(template, data) {
     return html;
 }
 
-Array.prototype.findObjectInArray = function(property, value) {
+Array.prototype.findObject = function(property, value) {
     for(var i = 0; i < this.length; i++) {
         if(this[i][property] === value) {
             return this[i];
@@ -47,7 +47,7 @@ Array.prototype.findObjectInArray = function(property, value) {
 };
 
 //lists
-function ListItem(attributes, tagName, template) {
+function ListItem(attributes, tagName, template, itemIdName) {
     if(!(this instanceof ListItem)) {
         return new ListItem();
     }
@@ -57,12 +57,16 @@ function ListItem(attributes, tagName, template) {
     //private variables
     var listItems = [];
 
-    var onCreation = function() {
-        self.DOMel = document.createElement((tagName ? tagName : "LI"));
-
+    var draw = function() {
         if(!!template) {
             self.DOMel.innerHTML = parseTemplate(template, self.attributes);
         }
+    };
+
+    var onCreation = function() {
+        self.DOMel = document.createElement((tagName ? tagName : "LI"));
+        self.DOMel.dataset.itemId = self.attributes[itemIdName];
+        draw();
     };
     //public variables
     self.DOMel = null;
@@ -70,6 +74,7 @@ function ListItem(attributes, tagName, template) {
 
     self.set = function(attributeName, value) {
         attributes[attributeName] = value;
+        draw();
     };
 
     self.get = function(attributeName) {
@@ -85,9 +90,7 @@ function ListItem(attributes, tagName, template) {
             }
         }
 
-        if(!!template) {
-            self.DOMel.innerHTML = parseTemplate(template, self.attributes);
-        }
+        draw();
     };
 
     onCreation();
@@ -115,7 +118,7 @@ function List(DOMElement, itemIdName) {
         if(!!DOMElement) {
             self.DOMel = DOMElement;
         }
-    }
+    };
 
     //public variables
     self.DOMel = null;
@@ -145,31 +148,36 @@ function List(DOMElement, itemIdName) {
             //TODO: throw error criteria is required to remove item
             throw new Error("Need to provide criteria to remove item from List");
         }
-
+        itemLoop:
         for(var i = 0; i < listItems.length; i++) {
             var attrs = listItems[i].attributes;
             console.log(attrs);
             for(var j in attrs) {
                 if(attrs.hasOwnProperty(j)) {
                     if(criteria[j]) {
-                        if (attrs[j] === criteria[j]) {
-                            indexesToRemove.push(i);
+                        if (attrs[j] !== criteria[j]) {
+                            //move to next item
+                            continue itemLoop;
                         }
                     }
                 }
             }
+            indexesToRemove.push(i);
+            delete itemsById[attrs.item_id];
 
         }
 
         listItems = listItems.filter(function(value, index) {
             return indexesToRemove.indexOf(index) === -1;
         });
+
         console.log("REDRAW");
         self.reDraw();
     };
 
     self.removeAll = function() {
         listItems = [];
+        itemsById = {};
 
         self.reDraw();
     };
@@ -184,4 +192,12 @@ function List(DOMElement, itemIdName) {
 
     //run on creation
     onCreation();
+}
+
+function changeText(target, text1, text2) {
+    if(target.innerText === text1) {
+        target.innerText = text2;
+    } else {
+        target.innerText = text1;
+    }
 }

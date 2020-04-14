@@ -32,7 +32,7 @@
                 </div>
 
                 <div style="padding: 1rem 0" data-toggle="collapse" data-target="#selectedMenu">
-                    Show Menu <span class="material-icons">add</span>
+                    <span id="showMenuButton" onclick="changeText(this, 'Menu Help', 'Hide Help')" class="btn btn-warning">Menu Help</span>
                 </div>
 
                 <div id="selectedMenu" class="collapse">
@@ -48,7 +48,7 @@
                         <%
                         for(let i = 0; i < menuItems.length; i++) {
                         %>
-                            <div data-toggle="collapse" data-target="#selectedMenu" data-item-id="<%= menuItems[i].item_id %>" class="menu-item-select"><%= menuItems[i].item_id %>: <%= menuItems[i].name %></div>
+                            <div onclick="changeText(document.querySelector('#showMenuButton'), 'Menu Help', 'Hide Help')" data-toggle="collapse" data-target="#selectedMenu" data-item-id="<%= menuItems[i].item_id %>" class="menu-item-select"><%= menuItems[i].item_id %>: <%= menuItems[i].name %></div>
                         <%
                         }
                         %>
@@ -72,8 +72,9 @@
         </div>
 
         <script type="text/template" id="orderItemTemplate">
-            <span class="item-qty"><span class="material-icons">remove</span>{{ quantity }}<span class="material-icons">add</span></span>
+            <span class="item-qty"><span class="material-icons qty-minus" onclick="minusQuantity(this)">remove</span><span class="qty">{{ quantity }}</span><span class="material-icons qty-plus" onclick="addQuantity(this)">add</span></span>
             <span class="item-description">{{ name }}</span>
+            <button style="display: block" class="item-deleting-button btn btn-danger hide">Cancel Deleting... <span class="delete-countdown"></span></button>
         </script>
 
 
@@ -111,7 +112,6 @@
 
             for(i = 0; i < itemSelects.length; i++) {
                 itemSelects[i].addEventListener("click", function() {
-                    console.log("Select item");
                     document.querySelector("#itemId").value = this.dataset.itemId;
                 }, false);
             }
@@ -120,6 +120,7 @@
             var orderList = new List(document.querySelector("#orderItems"), "item_id");
             var addToOrder = document.querySelector("#itemDetails");
             var addToOrderError = addToOrder.querySelector(".form-error");
+
             addToOrder.addEventListener("submit", function(e) {
                 e.preventDefault();
                 var formData = getFormData(this);
@@ -142,7 +143,7 @@
                     } else {
                         itemData.quantity = 1;
                         //create order item
-                        var orderItem = new ListItem(itemData, "LI", orderItemTemplate);
+                        var orderItem = new ListItem(itemData, "LI", orderItemTemplate, "item_id");
 
                         //add item to orderList
                         orderList.add(orderItem);
@@ -167,6 +168,9 @@
             var submitOrder = document.querySelector("#submitOrder");
             submitOrder.addEventListener("click", function() {
                 var itemsToSave = orderList.getItems();
+                if(itemsToSave.length < 1) {
+                    return false;
+                }
                 for(var i = 0; i < itemsToSave.length; i++) {
                     itemsToSave[i] = itemsToSave[i].attributes;
                 }
@@ -184,14 +188,17 @@
                 };
             }, false);
 
+            var clearOrder = document.querySelector("#clearOrder");
+            clearOrder.addEventListener("click", function() {
+                orderList.removeAll();
+            }, false);
+
             var menuSearch = document.querySelector("#menuSearch input");
             var selectedMenu = document.querySelector("#selectedMenu");
             var itemHolder = selectedMenu.querySelector(".item-holder");
             var items = selectedMenu.querySelectorAll(".item-holder > div");
 
             menuSearch.addEventListener("input", function() {
-                console.log(this);
-                console.log(this.value.toLowerCase().trim());
                 for(var i = 0; i < items.length; i++) {
                     console.log(i);
                     if(items[i].innerText.toLowerCase().trim().indexOf(this.value.toLowerCase().trim()) === -1) {
@@ -201,6 +208,30 @@
                     }
                 }
             }, false);
+
+            function addQuantity(me) {
+                var itemId = me.parentNode.parentNode.dataset.itemId;
+                orderList.getItemById(itemId).update({quantity: +me.previousElementSibling.innerText + 1});
+            }
+
+            function minusQuantity(me) {
+                var itemId = me.parentNode.parentNode.dataset.itemId;
+                var currentQty = +me.nextElementSibling.innerText;
+                console.log(currentQty);
+
+                if(currentQty >= 1) {
+                    orderList.getItemById(itemId).update({quantity: currentQty - 1});
+                }
+
+                if(currentQty === 1) {
+                    orderList.remove({item_id: orderList.getItemById(itemId).attributes.item_id});
+                }
+
+            }
+
+            function cancelItemDeleting(me) {
+                clearTimeout(me.deletingItem);
+            }
         </script>
     </body>
 </html>

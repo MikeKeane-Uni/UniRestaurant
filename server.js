@@ -26,6 +26,16 @@ app.use(sessionMiddleware);
 
 app.set('view engine', 'ejs');
 
+Array.prototype.findObject = function(property, value) {
+    for(var i = 0; i < this.length; i++) {
+        if(this[i][property] === value) {
+            return this[i];
+        }
+    }
+
+    return null;
+};
+
 //set up socket connections
 var kitchenIO = io.of('/kitchen');
 kitchenIO.on("disconnect", function() {
@@ -120,6 +130,57 @@ app.get('/counter', (req, res) => {
     res.render('pages/counter', {
         pageTitle: 'Counter View | Uni Restaurant'
     });
+});
+
+app.get('/counter/bills', (req, res) => {
+    console.log('GET /bills');
+    db.MenuItems.find({}).then(menuItems => {
+        db.Orders.find({paid: false}).then(orders => {
+            console.log(orders);
+            res.render('pages/bills', {
+                pageTitle: 'Bills | Counter Area',
+                orders: orders,
+                menuItems: menuItems
+            });
+        },failed => {
+            res.status(500).send({err: failed});
+        });
+    });
+
+});
+
+app.get('/counter/bills/:orderId', (req, res) => {
+    console.log('GET /bills');
+    db.MenuItems.find({}).then(menuItems => {
+        db.Orders.find({order_id: req.params.orderId}).then(order => {
+            console.log(order);
+            res.render('pages/print-bill', {
+                pageTitle: 'Print Bill ' + req.params.orderId + ' | Counter Area',
+                order: order,
+                menuItems: menuItems
+            });
+        },failed => {
+            res.status(500).send({err: failed});
+        });
+    });
+
+});
+
+app.get('/counter/reports', (req, res) => {
+    console.log('GET /reports');
+    db.MenuItems.find({}).then(menuItems => {
+        db.Orders.find({paid: true}).then(orders => {
+            console.log(orders);
+            res.render('pages/reports', {
+                pageTitle: 'Reports | Counter Area',
+                orders: orders,
+                menuItems: menuItems
+            });
+        },failed => {
+            res.status(500).send({err: failed});
+        });
+    });
+
 });
 
 //endpoints for DB interactions
@@ -217,6 +278,12 @@ app.put('/orders/items/complete/:idString', (req, res) => {
     db.OrderItems.findOneAndUpdate({_id: db.ObjectId(req.params.idString)}, {completed: true}).then(updated => {
         console.log(updated);
         return res.status(200).send("Marked as complete");
+    });
+});
+app.put('/orders/update/paid/:idString', (req, res) => {
+    db.Orders.findOneAndUpdate({_id: db.ObjectId(req.params.idString)}, {paid: true}).then(updated => {
+        console.log(updated);
+        return res.status(200).send("Marked as paid");
     });
 });
 

@@ -19,6 +19,12 @@ form {
     padding: 1rem;
 }
 
+#orderItems li {
+    box-shadow: 0 0 10px -7px #000000;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
 .order-item {
     display: flex;
     padding: 1rem;
@@ -49,7 +55,6 @@ form {
     display: inline-flex;
     vertical-align: middle;
     padding: 0.5rem;
-    border: 1px solid #eaeaea;
     width: 6rem;
     justify-content: space-between;
 }
@@ -99,4 +104,13 @@ form {
 
 .menu-item-select {
     padding: 1rem;
+}
+
+.menu-item-select:hover {
+    cursor: pointer;
+    background: #d3d3d3;
+}
+
+.qty-minus:hover, .qty-plus:hover {
+    cursor: pointer;
 }
