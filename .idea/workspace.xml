@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b94c9309-507e-4970-b9de-937f67b96d17" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/views/pages/bills.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/pages/print-bill.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/pages/reports.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db-connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/db-connection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/waiter-view.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/waiter-view.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/utility.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/utility.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/admin/users.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/admin/users.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/counter.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/counter.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pages/waiter-view.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/pages/waiter-view.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,8 +15,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="283" column="77" selection-start-line="283" selection-start-column="77" selection-end-line="283" selection-end-column="77" />
+            <state relative-caret-position="135">
+              <caret line="282" column="52" selection-start-line="282" selection-start-column="52" selection-end-line="282" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -48,15 +38,6 @@
               <folding>
                 <element signature="n#style#0;n#div#1;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/waiter-view.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -112,7 +93,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/pages/print-bill.ejs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="74">
@@ -122,6 +103,15 @@
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="8" selection-start-column="8" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -209,6 +199,7 @@
         <option value="$PROJECT_DIR$/views/pages/bills.ejs" />
         <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/views/pages/print-bill.ejs" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -287,7 +278,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="javascript.nodejs.core.library.configured.version" value="10.15.3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test/UniRestaurant" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -326,19 +317,19 @@
       <workItem from="1585129718078" duration="2047000" />
       <workItem from="1585512986260" duration="10405000" />
       <workItem from="1585594151025" duration="221174000" />
-      <workItem from="1586728014197" duration="34586000" />
+      <workItem from="1586728014197" duration="35311000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="400539000" />
+    <option name="totallyTimeSpent" value="401264000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.11497731" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.11497731" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Database Changes" order="1" />
@@ -347,7 +338,7 @@
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" weight="0.32649574" />
-      <window_info active="true" anchor="bottom" id="Run" order="7" visible="true" weight="0.33675215" />
+      <window_info anchor="bottom" id="Run" order="7" visible="true" weight="0.33675215" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
@@ -459,9 +450,6 @@
           <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/views/pages/admin/home.ejs">
       <provider selected="true" editor-type-id="text-editor">
@@ -597,13 +585,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="283" column="77" selection-start-line="283" selection-start-column="77" selection-end-line="283" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/pages/print-bill.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="74">
@@ -613,6 +594,20 @@
             <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="282" column="52" selection-start-line="282" selection-start-column="52" selection-end-line="282" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="8" selection-start-column="8" selection-end-column="8" />
         </state>
       </provider>
     </entry>
