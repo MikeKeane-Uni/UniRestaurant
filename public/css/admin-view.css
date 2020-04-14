@@ -8,7 +8,7 @@
     height: 100%;
 }
 
-.card {
+.option-card {
     display: inline-flex;
     vertical-align: top;
     align-items: center;
@@ -21,7 +21,7 @@
     font-weight: bold;
 }
 
-.card .material-icons {
+.option-card .material-icons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,12 +37,12 @@
     transition: opacity 0.25s ease-in;
 }
 
-.card .material-icons.flash {
+.option-card .material-icons.flash {
     opacity: 0.8;
 }
 
 
-.card:hover {
+.option-card:hover {
     cursor: pointer;
 }
 
@@ -61,6 +61,13 @@ ul {
     border-radius: 0.5rem;
     overflow: hidden;
     margin: 1rem 0;
+}
+
+#menuSelect li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 
@@ -146,3 +153,7 @@ form h2 {
 
 }
 
+.form-error {
+    color: red;
+    padding: 1rem 0;
+}

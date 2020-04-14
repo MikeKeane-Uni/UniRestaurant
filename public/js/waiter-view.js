@@ -98,8 +98,8 @@ var app = {};
             app.orderList.add(itemView);
         },
         submitOrder: function() {
-            var orderItems = $("#orderItems").find;
-            console.log(app.orderList.toJSON());
+            /*var orderItems = $("#orderItems").find;
+            console.log(app.orderList.toJSON());*/
         },
         clearOrder: function() {
 

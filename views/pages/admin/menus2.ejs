@@ -75,6 +75,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="form-error"></div>
                 <div class="form-group">
                     <label>Menu ID</label>
                     <input class="form-control" type="text" name="menu-id" />
@@ -104,6 +105,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="form-error"></div>
                 <div class="form-group">
                     <label>Item ID</label>
                     <input class="form-control" type="text" name="item-id" />
@@ -129,8 +131,6 @@
 
 <!-- load socket.io -->
 <script src="/socket.io/socket.io.js"></script>
-
-<script src="/js/utility.js"></script>
 
 <script>
     var socket = io("/menus");
@@ -161,8 +161,21 @@
         var newMenu = document.createElement("LI");
 
         var menuHTML = "<div class=\"menu-header\" data-toggle=\"collapse\" data-target=\"#menu" + menuData.menu_id + "\">\n" +
-            "    <span class=\"material-icons delete-menu\">delete</span><span class=\"menu-name\">" + menuData.name + " (<span class=\"menu-id\">" + menuData.menu_id + "</span>)</span><span \" + class=\"material-icons expand-menu\">add</span>\n" +
-            "    </div>";
+            "    <span class=\"material-icons delete-menu\">delete</span><span class=\"menu-name\">" + menuData.name + " (<span class=\"menu-id\">" + menuData.menu_id + "</span>)</span><span class=\"material-icons expand-menu\">add</span>\n" +
+            "    </div>" +
+            "<div id=\"menu" + menuData.menu_id + "\" class=\"menu-details collapse show\" style=\"\">\n" +
+            "                    <div class=\"item-holder\">\n" +
+            "                    \n" +
+            "                    <div class=\"no-items\">Currently no items in this menu</div>\n" +
+            "                    \n" +
+            "                    </div>\n" +
+            "\n" +
+            "                    <div class=\"add-menu-item-container\">\n" +
+            "                        <button onclick=\"setMenuIdForItem(this)\" class=\"btn btn-outline-success add-menu-item\" data-toggle=\"modal\" data-target=\"#addMenuItemModal\" data-menu-id=\"" + menuData.menu_id + "\">Add Item to " + menuData.name + " menu</button>\n" +
+            "                    </div>\n" +
+            "                </div>";
+
+
 
         newMenu.innerHTML = menuHTML;
 
@@ -309,14 +322,51 @@
         })(i);
     }
 
+    //retrieves all input name/value pairs
+    //TODO: need to make it ignore hidden inputs
+    function getFormData(form) {
+        var inputs = form.querySelectorAll("input");
+        var data = {};
+        for(var i = 0; i < inputs.length; i++ ) {
+            if(inputs[i].type === "submit" || inputs[i].type === "reset") {
+                continue;
+            }
+            data[inputs[i].name] = inputs[i].value;
+        }
+
+        return data;
+    }
+
+    function clearFormData(form) {
+        var inputs = form.querySelectorAll("input");
+
+        for(var i = 0; i < inputs.length; i++ ) {
+            if(inputs[i].type === "submit" || inputs[i].type === "reset") {
+                continue;
+            }
+
+            inputs[i].value = "";
+        }
+
+        return data;
+    }
+
     //add functionality to add menu form
     document.querySelector("#addNewMenuForm").addEventListener("submit", function(e) {
         e.preventDefault();
-
+		
         var inputData = getFormData(this);
-
+		
+		var validateID = validateMenuID(inputData["menu-id"]);
+		if (!validateID){ //Function has returned that the ID is not unique
+			console.log("Menu ID was not unique.");
+			this.querySelector(".form-error").innerText = "Menu ID is already in use";
+			return false;
+		}
+        this.querySelector(".form-error").innerText = "";
         addNewMenu(inputData["menu-id"], inputData["menu-name"]);
 
+        clearFormData(this);
         return false;
     });
 
@@ -336,8 +386,15 @@
     //add functionality to add menu item form
     document.querySelector("#addMenuItemForm").addEventListener("submit", function(e) {
         e.preventDefault();
-
         var inputData = getFormData(this);
+		
+		let validateID = validateItemID(inputData["item-id"], inputData["menu-id"]);
+		if (!validateID){ //Function has returned that the ID is not unique
+			console.log("Item ID was not unique.");
+			this.querySelector(".form-error").innerText = "Item ID is already in use";
+			return false;
+		}
+        this.querySelector(".form-error").innerText = "";
 
         addNewMenuItem(inputData["item-id"], inputData["item-name"], inputData["item-price"], inputData["menu-id"]);
 
@@ -350,8 +407,38 @@
             deleteMenuItem(this.dataset.itemId);
         });
     }
-
-
+	
+	//Setup validation for forms
+	function validateMenuID(newID) {
+		console.log(newID);
+		// Get list of all other Menu IDs currently available
+		let menuIDList = document.getElementsByClassName("menu-id");
+		for (i = 0; i<menuIDList.length; i++){
+			if (newID === menuIDList[i].innerHTML){
+				return false;
+			}
+		}
+		//The ID has been compared to all existing IDs
+		//The ID is not identical to any existing ID
+		return true;
+	}
+	function validateItemID(newItemID, menuID){
+		// Find target menu to check IDs against
+		let targetMenu = document.getElementById("menu"+menuID);
+		
+		// Get items from target menu
+		let menuItems = targetMenu.getElementsByClassName("item-id");
+		
+		// Compare
+		for (let m = 0; m < menuItems.length; m++){
+			if (menuItems[m].innerHTML == newItemID){
+				// ID is already taken
+				return false;
+			}
+		}
+		// ID did not match any existing IDs.
+		return true;
+	}
 </script>
 </body>
 </html>

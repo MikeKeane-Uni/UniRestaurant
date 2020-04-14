@@ -26,6 +26,16 @@ app.use(sessionMiddleware);
 
 app.set('view engine', 'ejs');
 
+Array.prototype.findObject = function(property, value) {
+    for(var i = 0; i < this.length; i++) {
+        if(this[i][property] === value) {
+            return this[i];
+        }
+    }
+
+    return null;
+};
+
 //set up socket connections
 var kitchenIO = io.of('/kitchen');
 kitchenIO.on("disconnect", function() {
@@ -73,17 +83,46 @@ app.get('/test', (req, res) => {
     res.end();
 });
 
-//renders the waiter view for taking orders
+app.get('/', (req, res) => {
+    res.render('pages/index', {pageTitle: 'Home | Uni Restaurant'})
+});
+
+//renders the waiter view for selecting menu
 app.get('/waiter', (req, res) => {
     console.log('GET /waiter');
-    res.render('pages/waiter-view', {
-        pageTitle: 'Waiter View | Uni Restaurant'
+    db.Menus.find({}).then(menus => {
+        res.render('pages/menu-select', {
+            pageTitle: 'Menu Selection | Waiter Area',
+            menus: JSON.stringify(menus)
+        });
+    }, error => {
+
+        res.end();
     });
+});
+//renders the waiter view for taking orders
+app.get('/waiter/create-order/:menuName', (req, res) => {
+    console.log('GET /waiter/create-order' + req.params.menuName);
+    db.Menus.findOne({name: decodeURIComponent(req.params.menuName)}).then(menu => {
+        console.log(menu);
+        res.render('pages/waiter-view', {
+            pageTitle: 'Create Order | Waiter Area',
+            menu: JSON.stringify(menu)
+        });
+    })
 });
 
 app.get('/kitchen', (req, res) => {
     console.log('GET /kitchen');
-    res.render('pages/kitchen');
+    db.MenuItems.find({}).then(menuItems => {
+        db.OrderItems.find({completed: false}).then(itemsToComplete => {
+            res.render('pages/kitchen', {
+                pageTitle: 'Kitchen View | Uni Restaurant',
+                allItems: JSON.stringify(menuItems),
+                itemsToComplete: JSON.stringify(itemsToComplete)
+            });
+        });
+    });
 });
 
 app.get('/counter', (req, res) => {
@@ -91,6 +130,57 @@ app.get('/counter', (req, res) => {
     res.render('pages/counter', {
         pageTitle: 'Counter View | Uni Restaurant'
     });
+});
+
+app.get('/counter/bills', (req, res) => {
+    console.log('GET /bills');
+    db.MenuItems.find({}).then(menuItems => {
+        db.Orders.find({paid: false}).then(orders => {
+            console.log(orders);
+            res.render('pages/bills', {
+                pageTitle: 'Bills | Counter Area',
+                orders: orders,
+                menuItems: menuItems
+            });
+        },failed => {
+            res.status(500).send({err: failed});
+        });
+    });
+
+});
+
+app.get('/counter/bills/:orderId', (req, res) => {
+    console.log('GET /bills');
+    db.MenuItems.find({}).then(menuItems => {
+        db.Orders.find({order_id: req.params.orderId}).then(order => {
+            console.log(order);
+            res.render('pages/print-bill', {
+                pageTitle: 'Print Bill ' + req.params.orderId + ' | Counter Area',
+                order: order,
+                menuItems: menuItems
+            });
+        },failed => {
+            res.status(500).send({err: failed});
+        });
+    });
+
+});
+
+app.get('/counter/reports', (req, res) => {
+    console.log('GET /reports');
+    db.MenuItems.find({}).then(menuItems => {
+        db.Orders.find({paid: true}).then(orders => {
+            console.log(orders);
+            res.render('pages/reports', {
+                pageTitle: 'Reports | Counter Area',
+                orders: orders,
+                menuItems: menuItems
+            });
+        },failed => {
+            res.status(500).send({err: failed});
+        });
+    });
+
 });
 
 //endpoints for DB interactions
@@ -145,6 +235,58 @@ app.get('/orders', (req, res) => {
     })
 });
 
+app.post('/orders/create', (req, res) => {
+    console.log('New Order Received');
+    //const tableNumber = req.body.table_number;
+    console.log(req.body.length);
+    let updates = [];
+    for(let i = 0; i < req.body.length; i++) {
+        var qty = req.body[i].quantity;
+        console.log("Quantity");
+        console.log(qty);
+        for(let j = 0; j < qty; j++) {
+            req.body[i].quantity = 1;
+            console.log(req.body[i]);
+            let update = db.OrderItems.create(req.body[i]);
+            updates.push(update);
+        }
+    }
+
+    Promise.all(updates).then(orderItems => {
+        console.log(orderItems);
+        db.Orders.find({}).sort({order_id: -1}).limit(1).then(order => {
+            const orderId = order.length > 0 ? order[0].order_id + 1 : 1;
+            db.Orders.create({order_id: orderId, order_items: orderItems}).then(newOrder => {
+                kitchenIO.emit("newOrder", newOrder);
+                console.log(newOrder);
+            });
+        })
+    });
+
+    res.end();
+    /*
+    db.Orders.create(req.body).then(order => {
+        res.send('Order created');
+
+    }, failed => {
+        res.status(500).send({err: failed});
+    });
+    */
+});
+
+app.put('/orders/items/complete/:idString', (req, res) => {
+    db.OrderItems.findOneAndUpdate({_id: db.ObjectId(req.params.idString)}, {completed: true}).then(updated => {
+        console.log(updated);
+        return res.status(200).send("Marked as complete");
+    });
+});
+app.put('/orders/update/paid/:idString', (req, res) => {
+    db.Orders.findOneAndUpdate({_id: db.ObjectId(req.params.idString)}, {paid: true}).then(updated => {
+        console.log(updated);
+        return res.status(200).send("Marked as paid");
+    });
+});
+
 
 //ADMIN
 app.get('/admin/login', (req, res) => {
@@ -197,7 +339,7 @@ app.get('/admin', (req, res) => {
 app.get('/admin/menus', (req, res) => {
     console.log('GET /admin/menus');
     db.Menus.find({}).then(menus => {
-        res.render('pages/admin/menus', {
+        res.render('pages/admin/menus2', {
             pageTitle: 'Menu Options | Admin Area',
             menus: JSON.stringify(menus)
         });
@@ -208,10 +350,11 @@ app.get('/admin/menus', (req, res) => {
 
 app.get('/admin/users', (req, res) => {
     console.log('GET /admin/users');
-    db.Menus.find({}).then(menus => {
-        res.render('pages/admin/menus', {
-            pageTitle: 'Menu Options | Admin Area',
-            menus: JSON.stringify(menus)
+    db.Users.find({}).then(users => {
+        console.log(users);
+        res.render('pages/admin/users', {
+            pageTitle: 'Users | Admin Area',
+            users: users
         });
     },failed => {
         res.status(500).send({err: failed});
@@ -306,5 +449,14 @@ app.delete('/admin/api/menu-items/:id', (req, res) => {
                 res.end('Removed ' + menuItem.item_id);
             });
         });
+    });
+});
+
+app.post('/admin/api/users', (req, res) => {
+    db.Users.create(req.body).then(user => {
+        //menusIO.emit("newMenuAdded", user);
+        res.end('New user added');
+    }, failed => {
+        return res.status(500).send({error: failed});
     });
 });

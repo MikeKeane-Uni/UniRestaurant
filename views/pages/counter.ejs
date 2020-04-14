@@ -3,7 +3,7 @@
 <head>
     <%- include('../partials/head') %>
 
-    <link rel="stylesheet" href="/css/counter-view.css" />
+    <link rel="stylesheet" href="/css/admin-view.css" />
 </head>
 <body>
 
@@ -17,21 +17,17 @@
 <main class="container">
     <div class="row justify-content-center">
         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card mb-3 bg-primary text-white">
-                <div class="material-icons">local_bar</div>
-                <div>Drink Orders</div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card mb-3 bg-secondary text-white">
+            <div class="option-card mb-3 bg-secondary text-white">
                 <div class="material-icons">receipt</div>
                 <div>Bills</div>
+                <a class="link" href="/counter/bills"></a>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card mb-3 bg-warning text-white">
+            <div class="option-card mb-3 bg-warning text-white">
                 <div class="material-icons">view_list</div>
                 <div>Reports</div>
+                <a class="link" href="/counter/reports"></a>
             </div>
         </div>
     </div>

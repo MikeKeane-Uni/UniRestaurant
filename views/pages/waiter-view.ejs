@@ -8,6 +8,10 @@
 
     </head>
     <body>
+    <%
+    const menu = JSON.parse(locals.menu);
+    const menuItems = menu.items;
+    %>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1>Restaurant</h1>
@@ -16,17 +20,45 @@
         </div>
 
         <div class="container" id="waiterApp">
-            <div id="itemDetails">
+            <form id="itemDetails">
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="number" class="form-control" id="tableNumber" placeholder="Table Number">
+                        <input type="number" class="form-control" name="table-number" id="tableNumber" placeholder="Table Number" min="1" step="1" required>
                     </div>
                     <div class="col-md-6">
-                        <input type="number" class="form-control" id="itemId" placeholder="Item ID">
+                        <input type="text" class="form-control" name="item-id" id="itemId" placeholder="Item ID" required>
+                        <div class="form-error"></div>
                     </div>
                 </div>
-                <button id="addToOrder" type="submit" class="btn btn-primary">Submit</button> <!--When submitted, info is supposed to go to card below-->
-            </div>
+
+                <div style="padding: 1rem 0" data-toggle="collapse" data-target="#selectedMenu">
+                    <span id="showMenuButton" onclick="changeText(this, 'Menu Help', 'Hide Help')" class="btn btn-warning">Menu Help</span>
+                </div>
+
+                <div id="selectedMenu" class="collapse">
+                    <div>
+                        <div id="menuSearch"class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="userFilter">Search</label>
+                            </div>
+                                <input class="form-control" type="search" />
+                        </div>
+
+                        <div class="item-holder">
+                        <%
+                        for(let i = 0; i < menuItems.length; i++) {
+                        %>
+                            <div onclick="changeText(document.querySelector('#showMenuButton'), 'Menu Help', 'Hide Help')" data-toggle="collapse" data-target="#selectedMenu" data-item-id="<%= menuItems[i].item_id %>" class="menu-item-select"><%= menuItems[i].item_id %>: <%= menuItems[i].name %></div>
+                        <%
+                        }
+                        %>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="addToOrder" type="submit" class="btn btn-primary">Add to Order</button><span class="added-text">Item added</span>
+
+            </form>
             <div class="card"><!--table number and order displayed in card-->
                 <div class="card-body">
                     <h2>Order Summary</h2>
@@ -40,47 +72,165 @@
         </div>
 
         <script type="text/template" id="orderItemTemplate">
-            <span class="item-qty">{{ qty }}no</span>
+            <span class="item-qty"><span class="material-icons qty-minus" onclick="minusQuantity(this)">remove</span><span class="qty">{{ quantity }}</span><span class="material-icons qty-plus" onclick="addQuantity(this)">add</span></span>
             <span class="item-description">{{ name }}</span>
+            <button style="display: block" class="item-deleting-button btn btn-danger hide">Cancel Deleting... <span class="delete-countdown"></span></button>
         </script>
 
 
         <!-- load bootstrap js -->
         <%- include('../partials/bootstrapjs') %>
-        <!-- load underscore.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"></script>
-        <!-- load backbone.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
         <!-- load socket.io -->
         <script src="/socket.io/socket.io.js"></script>
-        <!-- load custom page js -->
-        <script src="/js/waiter-view.js"></script>
 
-        <button onclick="testOrder()">Test</button>
+        <script src="/js/utility.js"></script>
 
         <script>
-            function testOrder() {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "http://localhost:8080/create-new-order", true);
-                xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify({
-                    items: [
-                        {
-                            quantity: 2,
-                            item_id: "1.1",
+            //open socket connection to enable sending orders via live connection
+            var kitchenIO = io('/kitchen');
+            kitchenIO.on("disconnect", function() {
+                alert("Socket disconnected, order will not be sent via live connection");
 
-                        },
-                        {
-                            item_id: "1.2"
-                        }
-                    ]
-                }));
+                //TODO: try to reconnect socket
+            });
+
+            var menu = {
+                <%
+                for(let i = 0; i < menuItems.length; i++) {
+                %>
+                <%- i !== 0 ? ',' : ''%>
+                "<%= menuItems[i].item_id %>": {
+                    "name": "<%= menuItems[i].name %>",
+                    "price": "<%= menuItems[i].price %>"
+                }
+                <%
+                }
+                %>
+            };
+
+            var itemSelects = document.querySelectorAll(".menu-item-select");
+
+            for(i = 0; i < itemSelects.length; i++) {
+                itemSelects[i].addEventListener("click", function() {
+                    document.querySelector("#itemId").value = this.dataset.itemId;
+                }, false);
+            }
+
+            var orderItemTemplate = document.querySelector("#orderItemTemplate");
+            var orderList = new List(document.querySelector("#orderItems"), "item_id");
+            var addToOrder = document.querySelector("#itemDetails");
+            var addToOrderError = addToOrder.querySelector(".form-error");
+
+            addToOrder.addEventListener("submit", function(e) {
+                e.preventDefault();
+                var formData = getFormData(this);
+                var itemId = formData["item-id"];
+                var tableNumber = formData["table-number"];
+
+                var itemData = menu[formData["item-id"]];
+                if(itemData) {
+                    //clear error messages
+                    addToOrderError.innerText = "";
+                    //add item to list
+                    //add id, table number and qty to itemData
+                    itemData.item_id = itemId;
+                    itemData.table_number = tableNumber;
+
+                    if(!!orderList.getItemById(itemId)) {
+                        itemData.quantity += 1;
+                        orderList.getItemById(itemId).update(itemData);
+                        orderList.reDraw();
+                    } else {
+                        itemData.quantity = 1;
+                        //create order item
+                        var orderItem = new ListItem(itemData, "LI", orderItemTemplate, "item_id");
+
+                        //add item to orderList
+                        orderList.add(orderItem);
+                    }
+                    document.querySelector(".added-text").classList.add("yes");
+                    setTimeout(function() {
+                        document.querySelector(".added-text").classList.remove("yes");
+                    }, 1000);
+                    //clear form but leave table number as is
+                    clearFormData(this, ["table-number"]);
+                } else {
+                    //show error - item not on menu
+                    addToOrderError.innerText = "Item ID not in menu";
+                }
+
+                return false;
+            }, false);
+        </script>
+
+        <script>
+            //submit order
+            var submitOrder = document.querySelector("#submitOrder");
+            submitOrder.addEventListener("click", function() {
+                var itemsToSave = orderList.getItems();
+                if(itemsToSave.length < 1) {
+                    return false;
+                }
+                for(var i = 0; i < itemsToSave.length; i++) {
+                    itemsToSave[i] = itemsToSave[i].attributes;
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/orders/create", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send(JSON.stringify(itemsToSave));
 
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState === 4 && xhr.status === 200) {
-                        console.log("done");
+                        kitchenIO.emit("newOrder");
+                        location.reload();
+                    }
+                };
+            }, false);
+
+            var clearOrder = document.querySelector("#clearOrder");
+            clearOrder.addEventListener("click", function() {
+                orderList.removeAll();
+            }, false);
+
+            var menuSearch = document.querySelector("#menuSearch input");
+            var selectedMenu = document.querySelector("#selectedMenu");
+            var itemHolder = selectedMenu.querySelector(".item-holder");
+            var items = selectedMenu.querySelectorAll(".item-holder > div");
+
+            menuSearch.addEventListener("input", function() {
+                for(var i = 0; i < items.length; i++) {
+                    console.log(i);
+                    if(items[i].innerText.toLowerCase().trim().indexOf(this.value.toLowerCase().trim()) === -1) {
+                        items[i].classList.add("hide");
+                    } else {
+                        items[i].classList.remove("hide");
                     }
                 }
+            }, false);
+
+            function addQuantity(me) {
+                var itemId = me.parentNode.parentNode.dataset.itemId;
+                orderList.getItemById(itemId).update({quantity: +me.previousElementSibling.innerText + 1});
+            }
+
+            function minusQuantity(me) {
+                var itemId = me.parentNode.parentNode.dataset.itemId;
+                var currentQty = +me.nextElementSibling.innerText;
+                console.log(currentQty);
+
+                if(currentQty >= 1) {
+                    orderList.getItemById(itemId).update({quantity: currentQty - 1});
+                }
+
+                if(currentQty === 1) {
+                    orderList.remove({item_id: orderList.getItemById(itemId).attributes.item_id});
+                }
+
+            }
+
+            function cancelItemDeleting(me) {
+                clearTimeout(me.deletingItem);
             }
         </script>
     </body>
